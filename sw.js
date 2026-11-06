@@ -1,5 +1,5 @@
 /* Cache hors ligne. Changer VERSION a chaque nouvelle version de index.html. */
-var VERSION = "pmx-stock-v1";
+var VERSION = "pmx-stock-v4";
 var FILES = ["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", function(e){
   e.waitUntil(caches.open(VERSION).then(function(c){ return c.addAll(FILES); }).then(function(){ return self.skipWaiting(); }));

@@ -20,13 +20,27 @@
   --font:Arial,Helvetica,sans-serif;
 }
 @media (prefers-color-scheme: dark){
-  :root{
+  :root:not([data-theme="light"]){
+      --bg:#101719; --surface:#182124; --sunk:#0E1416; --fg:#E4ECEE; --muted:#96A5AA; --line:#2A383C;
+      --accent:#3DB8D1; --accent-ink:#06222A; --accent-soft:#123037;
+      --bad:#EE8B80; --bad-soft:#3A1B18; --warn:#E3A850; --warn-soft:#33260F; --good:#5CC089; --good-soft:#14301F;
+      color-scheme:dark;
+    }
+  :root:not([data-theme="light"]) .badge.chu{background:var(--sunk);color:var(--muted)}
+  :root:not([data-theme="light"]) .pl{--pe:rgba(255,255,255,.35);--pr:rgba(255,255,255,.3)}
+  :root:not([data-theme="light"]) .pl.glass{--pe:rgba(150,200,225,.5);--pr:rgba(150,200,225,.7)}
+  :root:not([data-theme="light"]) .pl.smoke{background:linear-gradient(135deg,rgba(190,190,200,.30),rgba(190,190,200,.5));--pe:rgba(200,200,210,.5);--pr:rgba(200,200,210,.6)}
+  }
+:root[data-theme="dark"]{
     --bg:#101719; --surface:#182124; --sunk:#0E1416; --fg:#E4ECEE; --muted:#96A5AA; --line:#2A383C;
     --accent:#3DB8D1; --accent-ink:#06222A; --accent-soft:#123037;
     --bad:#EE8B80; --bad-soft:#3A1B18; --warn:#E3A850; --warn-soft:#33260F; --good:#5CC089; --good-soft:#14301F;
     color-scheme:dark;
   }
-}
+:root[data-theme="dark"] .badge.chu{background:var(--sunk);color:var(--muted)}
+:root[data-theme="dark"] .pl{--pe:rgba(255,255,255,.35);--pr:rgba(255,255,255,.3)}
+:root[data-theme="dark"] .pl.glass{--pe:rgba(150,200,225,.5);--pr:rgba(150,200,225,.7)}
+:root[data-theme="dark"] .pl.smoke{background:linear-gradient(135deg,rgba(190,190,200,.30),rgba(190,190,200,.5));--pe:rgba(200,200,210,.5);--pr:rgba(200,200,210,.6)}
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.4;-webkit-text-size-adjust:100%}
@@ -57,22 +71,44 @@ h2{font-size:18px;margin:4px 0 10px}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:bold}
 .chip.alert[aria-pressed="true"]{background:var(--bad);border-color:var(--bad);color:#fff}
 .grp{margin:18px 0 6px;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:.1em;color:var(--gris)}
-.card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin-bottom:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
-.card.low{border-color:var(--bad);background:linear-gradient(0deg,var(--bad-soft),var(--bad-soft)),var(--surface)}
+.card{display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:6px;background:var(--surface);background:color-mix(in srgb,var(--tc,var(--surface)) 14%,var(--surface));color:var(--fg);border:1px solid var(--line);border-left:6px solid var(--tc,var(--line));border-radius:8px}
+.card.chute{border-top-style:dashed;border-right-style:dashed;border-bottom-style:dashed}
+.card.low{border:2px solid var(--bad);border-left:6px solid var(--tc,var(--bad))}
 .card .info{flex:1;min-width:0;cursor:pointer}
 .card .t{font-weight:bold;overflow-wrap:anywhere}
 .card .s{font-size:13px;color:var(--muted)}
 .badge{display:inline-block;margin:4px 5px 0 0;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:bold}
 .badge.bad{background:var(--bad);color:#fff}
 .badge.warn{background:var(--warn-soft);color:var(--warn)}
-.badge.chu{background:var(--sunk);color:var(--muted)}
+.badge.chu{background:rgba(0,0,0,.14);color:#1B2529}
+.fam{display:inline-block;min-width:34px;margin-right:7px;padding:1px 5px;border-radius:4px;border:1px solid rgba(0,0,0,.3);font-size:11px;font-weight:bold;text-align:center;vertical-align:1px;letter-spacing:.03em}
 .qty{flex:none;display:flex;align-items:center;gap:6px}
 .qty button{width:46px;height:46px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:24px;line-height:1;font-weight:bold;color:var(--accent)}
 .qty button:active{background:var(--accent-soft)}
 .qty input{width:62px;height:46px;text-align:center;font-size:20px;font-weight:bold;background:var(--bg);border:1px solid var(--line);border-radius:8px;-moz-appearance:textfield}
 .qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:15;padding:14px 18px;border:0;border-radius:28px;background:var(--accent);color:var(--accent-ink);font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.28)}
-@media (min-width:760px){.fab{bottom:24px}}
+.fabs{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:15;display:flex;gap:8px}
+.fabs[hidden]{display:none}
+.fab{padding:14px 18px;border:2px solid var(--accent);border-radius:28px;background:var(--accent);color:var(--accent-ink);font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.28)}
+.fab.alt{background:var(--surface);color:var(--accent)}
+@media (min-width:760px){.fabs{bottom:24px}}
+.hb{display:flex;align-items:center;gap:8px}
+.ib{width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;border:1px solid #C9D3D6;border-radius:8px;background:#FFFFFF;color:#777471}
+.ib:active{background:#E8EEF0}
+@media (max-width:560px){header.top .ttl{display:none}}
+.calhd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;text-transform:capitalize}
+.calhd .btn{flex:none;padding:8px 16px}
+.calg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px}
+.calg .wd{text-align:center;font-size:12px;font-weight:bold;color:var(--muted)}
+.cal-d{min-height:46px;padding:4px 2px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-weight:bold}
+.cal-d.today{border:2px solid var(--accent)}
+.cal-d.sel{background:var(--accent);color:var(--accent-ink)}
+.cal-d .dots{display:flex;gap:3px;justify-content:center;margin-top:3px;min-height:7px}
+.dot{width:7px;height:7px;border-radius:50%}
+.dot.s{background:var(--bad)} .dot.e{background:var(--good)} .dot.o{background:var(--warn)} .dot.c{background:var(--muted)}
+.cal-d.sel .dot{box-shadow:0 0 0 1px #fff}
+.chk{display:flex;align-items:center;gap:8px;margin-top:8px;font-weight:normal;font-size:14px;color:var(--fg)}
+.chk input{width:22px;height:22px;accent-color:var(--accent)}
 .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:12px}
 .seg button{flex:1;padding:11px 8px;background:var(--surface);border:0;border-right:1px solid var(--line);font-weight:bold;color:var(--muted)}
 .seg button:last-child{border-right:0}
@@ -125,38 +161,66 @@ details.wk .sum{display:block;font-weight:normal;font-size:13px;color:var(--mute
 .instbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-left,0px));background:var(--accent);color:var(--accent-ink);font-size:14px;font-weight:bold}
 .instbar[hidden]{display:none}
 .instbar button{flex:none;padding:9px 16px;border:0;border-radius:6px;background:#fff;color:#00829C;font-weight:bold}
+.phs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.ph{position:relative;width:76px;height:76px;border-radius:6px;background:var(--sunk) center/cover no-repeat;border:1px solid var(--line);cursor:pointer}
+.ph .x{position:absolute;top:-8px;right:-8px;width:26px;height:26px;padding:0;border-radius:50%;border:0;background:var(--bad);color:#fff;font-weight:bold;line-height:1}
+.locrow{display:flex;gap:6px;margin-bottom:6px}
+.locrow select{flex:1 1 0;min-width:0;padding:10px 8px;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.locrow input{flex:0 0 58px;width:58px;padding:10px 6px;text-align:center;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.locrow .lc{flex:0 0 64px}
+.tag{display:inline-block;margin:3px 5px 0 0;padding:0 8px;border-radius:10px;font-size:12px;font-weight:bold;background:rgba(127,127,127,.25)}
+.seg2{display:flex;gap:6px;margin-bottom:10px}
+#pv{background:rgba(0,0,0,.85);align-items:center}
+#pv img{max-width:96vw;max-height:92vh;object-fit:contain}
+#sh2 .panel textarea{width:100%;padding:11px 12px;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+nav.bar button{font-size:12px;padding:12px 2px}
+nav.bar .n[hidden]{display:none}
+.card .qty{gap:4px}
+.card .qty button{width:40px;height:44px;font-size:22px}
+.card .qty input{width:52px;height:44px;font-size:19px}
+.pl{--pe:rgba(0,0,0,.35);--pr:rgba(0,0,0,.2);flex:none;width:46px;height:30px;border-radius:3px;margin-bottom:var(--th,4px);box-shadow:0 var(--th,4px) 0 var(--pe),inset 0 0 0 1px var(--pr)}
+.pl.glass{background:linear-gradient(135deg,transparent 0 36%,rgba(140,185,210,.35) 44% 56%,transparent 64%);--pe:rgba(110,155,180,.45);--pr:rgba(80,115,135,.6)}
+.pl.smoke{background:linear-gradient(135deg,rgba(40,40,45,.38),rgba(40,40,45,.55));--pe:rgba(60,60,65,.5);--pr:rgba(40,40,45,.6)}
+.row .pl{margin-right:2px}
+.grp.mc{padding:5px 10px;border-left:6px solid var(--tc);background:color-mix(in srgb,var(--tc) 22%,var(--surface));color:var(--fg);border-radius:4px}
+.chip.mc{border-left:6px solid var(--tc,var(--line))}
 </style>
 </head>
 <body>
 <header class="top">
   <img alt="Publimax, enseignes et publicité" src="data:image/png;base64,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VJEDD8jQB5Tr17pw1hLzwrczfargMksUMLBTkc4BHf0x712Hw9ktm8LokBfzEkbzty4+c+ntjFdDa6bY2TFrSytrcnqYolTP5Cp44o4VKxRoikliFUAZJyT+JpDH0UUUxHKfET/kVH/67J/OsXSPANvqOj2l1JqVyomiV2jUDAyOgr0Ga3huY/LnijlTOdsihh+Rp0caRRrHGioijCqowAPYUAZuieH9P0CBo7KNtz43yucs+PU/0FalFFAHmOkagvgjxLqNpqUUgtrghklVc8AnafcYJzjvTvFevw+KzZ6Ro8ck7GYOWKlecED8OSSa9FubO1vUCXVtDOg6LKgYfrTbXT7Kxz9ks7e33dfKiVM/kKQx9pALWzgtwciKNUz64GK5b4k/8iun/Xyn8mrr6jnt4LmPy7iGOVM52yKGGfoaYjhNL8R+EYNIsobmGA3CQIspNpk7goB5xzzVLw00V78QpLvRbd4dNCt5gC7VwVx07ZbBA9q7/wDsfTP+gdZ/9+F/wq1FDFbxiOGJI0HRUUAfkKQx9eaWusWWifEXWLm+kMcTK0YIUtyWQ9voa9LqpJpenzSNJLY2zuxyWaFST+OKYjJtPG2h3t3FawXLtLKwRAYmGSfwroaqR6Xp8UiyR2FqjqcqywqCD7HFW6APPvDP/JTNc/3Jf/RiV6DUMdpbRTvPHbxJM+d0ioAzfU96moA80Mlx4D8VXM0tu8ml3hOGQdBnIx7jJGO4ravfiNpEVqWsxLcXBHyxlCoB9yf6ZrrpYo5ozHLGsiN1VxkH8KqwaPpltKJYNOtIpB0eOBVI/ECgCWwuje2EFy0EkDSoGMUgwy+xrj/if/yBLP8A6+f/AGU13FRT2tvdIFuIIplByBIgYA/jQBHp/wDyDbX/AK4p/IVZpFUKoVQAAMADtS0AefeEP+R/8Qf783/o2vQahjtLaGZ5oreJJXzvdUAZs88nvU1AHIfEn/kV0/6+U/k1Z+l+I/CMGkWUNzDAbhIEWUm0ydwUA8455ru57eC5j8u4hjlTOdsihhn6Gq39j6Z/0DrP/vwv+FIZDomq6bqlmzaWR5ETbNoj2AHrwMe9adRQWtvaoVt4IoVJyRGgUE/hUtMQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/Z">
-  <div class="ttl">Stock plaques</div>
+  <div class="hb"><span class="ttl">Stock plaques</span><button class="ib" id="bcal" type="button" aria-label="Calendrier"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button class="ib" id="bth" type="button" aria-label="Clair ou sombre"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button><button class="ib" id="blk" type="button" aria-label="Verrouiller"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></div>
 </header>
 <div class="instbar" id="instbar" hidden><span>Installer Publimax stock sur ce téléphone</span><button type="button" id="inst">Installer</button></div>
 <nav class="bar" id="nav" aria-label="Sections">
   <button type="button" data-v="stock">Stock</button>
   <button type="button" data-v="cmd">Commande<span class="n" id="navn" hidden></span></button>
-  <button type="button" data-v="wk">Semaines</button>
+  <button type="button" data-v="liv">Livraisons<span class="n" id="navl" hidden></span></button>
+  <button type="button" data-v="fou">Fournisseurs</button>
   <button type="button" data-v="set">Réglages</button>
 </nav>
 <main id="main"></main>
-<button class="fab" id="fab" type="button">+ Plaque</button>
+<div class="fabs" id="fabs"><button class="fab alt" id="fabc" type="button">+ Chute</button><button class="fab" id="fab" type="button">+ Plaque</button></div>
 
 <div class="sheet" id="sheet" hidden>
   <form class="panel" id="f" autocomplete="off">
     <h2 id="ft">Plaque</h2>
+    <div class="field"><label for="ftype">Type</label><select id="ftype"><option value="plaque">Plaque entière</option><option value="chute">Chute</option></select></div>
+    <div class="field" id="fsrcw" hidden><label for="fsrc">Chute taillée dans une plaque (facultatif)</label><select id="fsrc"></select><label class="chk"><input type="checkbox" id="fretire"> Retirer 1 plaque du stock</label></div>
     <div class="g2">
       <div class="field"><label for="fmat">Matière</label><input id="fmat" list="matl" placeholder="ALU COMPOSITE"></div>
       <div class="field"><label for="fep">Épaisseur (mm)</label><input id="fep" inputmode="decimal" placeholder="3"></div>
     </div>
     <datalist id="matl"></datalist>
     <div class="field"><label for="fcoul">Couleur</label><input id="fcoul" placeholder="RAL 7016"></div>
-    <div class="field"><label for="ffmt">Taille de la plaque (mm)</label><input id="ffmt" placeholder="3050x1500"></div>
+    <div class="field"><label for="ffmt" id="ffmtl">Taille de la plaque (mm)</label><input id="ffmt" placeholder="3050x1500"></div>
     <div class="g2">
-      <div class="field"><label for="fqty">Quantité (plaques)</label><input id="fqty" inputmode="numeric" placeholder="0"></div>
-      <div class="field"><label for="fchu">Chutes</label><input id="fchu" inputmode="numeric" placeholder="0"></div>
+      <div class="field"><label for="fqty">Quantité</label><input id="fqty" inputmode="numeric" placeholder="0"></div>
+      <div class="field"><label for="ffam">Teinte (pour la vignette)</label><select id="ffam"><option value="">-</option><option>IVO</option><option>JAU</option><option>ROG</option><option>BLE</option><option>VET</option><option>GRI</option><option>NOR</option><option>MET</option><option>ORG</option><option>B&amp;W</option></select></div>
     </div>
-    <div class="field"><label for="fseuil">Seuil de commande (alerte quand la quantité est à ce niveau ou en dessous)</label><input id="fseuil" inputmode="numeric" placeholder="vide = pas d'alerte"></div>
+    <div class="field" id="fsupw"><label for="fsup">Fournisseur</label><select id="fsup"></select></div>
+    <div class="field"><label>Emplacements : zone / étage (0 = sol) / colonne (A = à gauche)</label><div id="flocs"></div><button class="btn" type="button" id="flocadd" style="width:100%">+ Emplacement</button><label class="chk"><input type="checkbox" id="fall"> Appliquer fournisseur et emplacements à toute la matière</label></div>
+    <div class="field" id="fseuilw"><label for="fseuil">Seuil de commande (alerte quand la quantité est à ce niveau ou en dessous)</label><input id="fseuil" inputmode="numeric" placeholder="vide = pas d'alerte"></div>
     <div class="field"><label for="fnote">Note</label><input id="fnote" placeholder="code fournisseur, client…"></div>
     <div class="err" id="ferr"></div>
     <div class="btns">
@@ -166,6 +230,11 @@ details.wk .sum{display:block;font-weight:normal;font-size:13px;color:var(--mute
     </div>
   </form>
 </div>
+<div class="sheet" id="sh2" hidden><div class="panel" id="sh2p"></div></div>
+<div class="sheet" id="pv" hidden><img id="pvimg" alt="Photo"></div>
+<input type="file" id="pcam" accept="image/*" capture="environment" hidden>
+<input type="file" id="pgal" accept="image/*" multiple hidden>
+<div class="sheet" id="cal" hidden><div class="panel" id="calp"></div></div>
 <div class="lock" id="lock" hidden>
   <h2 id="lt">Code d'accès</h2>
   <input class="li" id="li" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="Code à 4 chiffres">
@@ -178,112 +247,112 @@ details.wk .sum{display:block;font-weight:normal;font-size:13px;color:var(--mute
 "use strict";
 var KEY = "publimax_stock_v1";
 var MATORDER = ["PVC","PVC KOMACEL","MPLI","PETG","PC","PC UV","PMMA","ALU","CSTEEL","ALU COMPOSITE"];
-/* Inventaire du 05/11/2026 lu sur la photo : [matière, épaisseur, couleur, taille, plaques, chutes, note] */
+/* Inventaire du 05/11/2026 (2 feuilles) : [matiere, epaisseur, couleur, taille, plaques, chutes, note, a commander, taille chute, famille] */
 var SEED = [
- ["PVC","1","BLANC","3050x1560",2,0,"PVC1 BLC",0],
- ["PVC","3","BLANC","3050x1560",7,0,"PVC3 BLC ; feuille : 1 palette a commander",1],
- ["PVC","3","BLANC","3050x2050",33,0,"PVC3 BLC",0],
- ["PVC","5","BLANC","3050x2050",20,0,"PVC5 BLC",0],
- ["PVC","10","BLANC","3050x2050",10,0,"PVC10 BLC",0],
- ["PVC","19","BLANC","3050x1550",13,0,"PVC19 BLC",0],
- ["PVC","30","BLANC","3050x1220",2,0,"PVC30 BLC",6],
- ["PVC","3","NOIR","3050x1560",1,0,"PVC3 NOR",2],
- ["PVC","5","NOIR","2770x1560",2,0,"PVC5 NOR",0],
- ["PVC","8","NOIR","3050x2050",0,0,"PVC8 NOR",0],
- ["PVC","10","NOIR","3050x2050",2,0,"PVC10 NOR",0],
- ["PVC","19","NOIR","3050x1550",6,0,"PVC19 NOR",0],
- ["PVC","8","ROUGE","3050x2050",1,0,"PVC8 ROG",0],
- ["PVC KOMACEL","1","BLANC CHOC","2000x1000",8,0,"PVC1 CHOC BLC ; classe CHOC a confirmer",0],
- ["PVC KOMACEL","3","BLANC CHOC","3000x1500",4,0,"PVC3 CHOC BLC",0],
- ["PVC KOMACEL","10","BLANC CHOC","",0,1,"PVC10 CHOC BLC : chute",0],
- ["PVC KOMACEL","19","BLANC","3000x1250",0,1,"PVC19 KOMACEL BLC : chute",0],
- ["PVC KOMACEL","19","NOIR","3000x1250",4,0,"PVC19 KOMACEL NOR",0],
- ["MPLI","19","","",0,1,"MPLI19 : chutes",0],
- ["MPLI","32","","",0,1,"MPLI32 : chutes",0],
- ["PETG","1","TRANSPARENT (TRAINC)","2050x1250",3,0,"A-PET1 TRAINC",0],
- ["PETG","4","TRANSPARENT (TRAINC)","3050x2050",7,0,"PETG4 TRAINC ; 1re ligne de la feuille",0],
- ["PETG","4","TRANSPARENT (TRAINC)","3050x2050",5,0,"PETG4 TRAINC ; 2e ligne de la feuille : a verifier",0],
- ["PC","1","TRANSPARENT (TRAINC)","2050x1250",3,0,"PC1 TRAINC",0],
- ["PC UV","3","TRANSPARENT (TRAINC)","3050x2050",0,4,"PCUV3 TRAINC : x4 chutes 2050x925",0],
- ["PC","4","TRANSPARENT (TRAINC)","3050x2050",1,0,"PC4 TRAINC",0],
- ["PC","6","FUME","3050x1330",1,0,"PC6 FUME",0],
- ["PMMA","3","BLANC DIFFUSANT","3050x2030",19,0,"PMMA3 BLCDIF",0],
- ["PMMA","4","BLANC DIFFUSANT","3050x2030",1,0,"PMMA4 BLCDIF",0],
- ["PMMA","8","BLANC DIFFUSANT","",2,0,"PMMA8 BLCDIF ; format non note",0],
- ["PMMA","10","BLANC DIFFUSANT","3050x2050",0,0,"PMMA10 BLCDIF",1],
- ["PMMA","15","BLANC DIFFUSANT","2030x1525",1,0,"PMMA15 BLCDIF",0],
- ["PMMA","20","BLANC DIFFUSANT","2030x1525",1,0,"PMMA20 BLCDIF",0],
- ["PMMA","30","BLANC DIFFUSANT","2030x1520",2,0,"PMMA30 BLCDIF",0],
- ["PMMA","3","TRANSPARENT (TRAINC)","3050x2030",3,0,"PMMA3 TRAINC",0],
- ["PMMA","5","TRANSPARENT (TRAINC)","3050x2030",0,0,"PMMA5 TRAINC",6],
- ["PMMA","6","TRANSPARENT (TRAINC)","3050x2030",0,0,"PMMA6 TRAINC",1],
- ["PMMA","8","TRANSPARENT (TRAINC)","1520x2050",3,0,"PMMA8 TRAINC",0],
- ["PMMA","10","TRANSPARENT (TRAINC)","1520x2030",4,0,"PMMA10 TRAINC",0],
- ["PMMA","15","TRANSPARENT (TRAINC)","2000x1500",1,0,"PMMA15 TRAINC",0],
- ["PMMA","20","TRANSPARENT (TRAINC)","2000x1200",1,0,"PMMA20 TRAINC",0],
- ["PMMA","25","TRANSPARENT (TRAINC)","2000x1200",0,1,"PMMA25 TRAINC : chute",0],
- ["PMMA","3","BLANC OPAQUE","3050x2030",3,0,"PMMA3 BLCOPQ MP74002/G",0],
- ["PMMA","10","BLANC OPAQUE","1520x2030",1,0,"PMMA10 BLCOPQ MP74309/A",0],
- ["ALU","1","NOIR","3000x1500",5,0,"ALU1 NOR",0],
- ["ALU","1","BLANC","3000x1500",8,0,"ALU1 BLC",0],
- ["ALU","1,5","BLANC","3000x1500",1,0,"ALU1,5 BLC",0],
- ["ALU","1","BRUT","3000x1500",0,0,"ALU1 BRUT",0],
- ["ALU","1,5","BRUT","3000x1500",0,0,"ALU1,5 BRUT",0],
- ["ALU","2","BRUT","3000x1500",8,0,"ALU2 BRUT",0],
- ["CSTEEL","3","BLANC","3050x1500",4,0,"CSTEEL3 BLC",0],
- ["ALU COMPOSITE","2","BLANC D2","3050x1500",4,0,"COMP2D2 BLC"],
- ["ALU COMPOSITE","3","BLANC D2","2550x1250",39,0,"COMP3D2 BLC"],
- ["ALU COMPOSITE","3","BLANC D2","3050x1500",33,0,"COMP3D2 BLC"],
- ["ALU COMPOSITE","3","BLANC D2","3050x2050",44,0,"COMP3D2 BLC"],
- ["ALU COMPOSITE","3","BLANC D3","3050x1500",41,0,"COMP3D3 BLC"],
- ["ALU COMPOSITE","3","BLANC D3","3050x2050",14,0,"COMP3D3 BLC"],
- ["ALU COMPOSITE","3","BLANC D3","4050x1500",0,0,"COMP3D3 BLC"],
- ["ALU COMPOSITE","3","NOIR D3","4050x1500",1,0,"COMP3D3 NOR"],
- ["ALU COMPOSITE","3","BLANC D3","4050x2000",1,0,"COMP3D3 BLC"],
- ["ALU COMPOSITE","6","BLANC D3","3050x2000",0,0,"COMP6D3 BLC"],
- ["ALU COMPOSITE","6","BLANC D3","3050x1500",0,0,"COMP6D3 BLC"],
- ["ALU COMPOSITE","3","EBASIC","3050x1500",4,0,"COMP3 eBasic"],
- ["ALU COMPOSITE","3","RAL 1015","3050x1500",5,1,"5+1 sur la feuille"],
- ["ALU COMPOSITE","3","RAL 1023","3050x1500",4,0,""],
- ["ALU COMPOSITE","3","RAL 3002","3050x1500",8,0,"KFC"],
- ["ALU COMPOSITE","3","RAL 3003","3050x1500",8,0,"Panetière"],
- ["ALU COMPOSITE","3","RAL 3004","3050x1500",0,1,"PataNegra, chute"],
- ["ALU COMPOSITE","3","RAL 3020","3050x1500",17,0,""],
- ["ALU COMPOSITE","3","RAL 3020","3050x2000",17,0,""],
- ["ALU COMPOSITE","3","RAL 5002","3050x1500",4,1,"4+1 sur la feuille"],
- ["ALU COMPOSITE","3","RAL 6005","3050x1500",15,0,""],
- ["ALU COMPOSITE","3","RAL 6005","3050x2000",1,0,""],
- ["ALU COMPOSITE","3","RAL 6018","3050x2000",3,0,""],
- ["ALU COMPOSITE","3","RAL 6024","3050x2000",2,0,""],
- ["ALU COMPOSITE","3","RAL 7011 / RAL 7047","3050x2000",27,0,"un côté 7011, l'autre 7047"],
- ["ALU COMPOSITE","3","RAL 7016","3050x1500",3,0,""],
- ["ALU COMPOSITE","3","RAL 7016","3050x2000",4,3,"4+3 sur la feuille : à vérifier"],
- ["ALU COMPOSITE","3","RAL 9005","3050x1500",19,0,""],
- ["ALU COMPOSITE","3","RAL 9005","3050x2000",2,0,""],
- ["ALU COMPOSITE","3","RAL 9006","3050x2000",0,1,"chute"],
- ["ALU COMPOSITE","3","ALU BROSSE ARGENT","3050x1500",3,0,"COMP3 BROARG"],
- ["ALU COMPOSITE","3","ALU BROSSE OR","3050x1500",1,0,"COMP3 BRO2OR"],
- ["ALU COMPOSITE","3","MIRROR SILVER","3050x1250",2,0,"COMP3 MIRARG"],
- ["ALU COMPOSITE","3","MIRROR GOLD","3050x1250",1,0,"COMP3 MIROR"],
- ["PMMA","","PERSPEX 133","3050x2030",2,0,"épaisseur à renseigner"],
- ["PMMA","","PERSPEX 4TL3","3050x2030",5,0,"épaisseur à renseigner"],
- ["PMMA","","PERSPEX 6TL1","3050x2030",5,0,"épaisseur à renseigner"],
- ["PMMA","","ALTUGLAS CN100-12000","3050x810",0,1,"chute ; épaisseur à renseigner"],
- ["PMMA","3","PERSPEX 7TL1","3050x2030",3,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","PERSPEX 2TL1","3050x2030",3,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","PERSPEX 260","3050x2030",1,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","PERSPEX 6T81","3050x2030",1,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","PERSPEX 750","3050x2030",1,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","PERSPEX 2TL2","3050x2030",1,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","MADREPERLA 02016/B","3050x2030",1,0,"catalogue : MEDIAPOLE ; à confirmer"],
- ["PMMA","3","ALTUGLAS CN100-23004","3050x2030",1,0,"stock PMMA3 de la feuille"],
- ["PMMA","3","ALTUGLAS CN100-24013","3050x2030",1,0,"feuille : C100-24013"],
- ["PMMA","3","PERSPEX 9TL1","3050x2030",1,0,"noir et blanc ; absent du catalogue"],
- ["PMMA","3","MADREPERLA 76080/B","3050x2030",1,0,"noir et blanc ; catalogue : MEDIAPOLE"],
- ["PMMA","3","PERSPEX 3TL1","3050x2030",1,0,"stock PMMA3 de la feuille"]
+ ["PVC", "1", "BLANC", "3050x1560", 2, 0, "PVC1 BLC", 0, "", ""],
+ ["PVC", "3", "BLANC", "3050x1560", 7, 0, "PVC3 BLC ; feuille : 1 palette a commander", 1, "", ""],
+ ["PVC", "3", "BLANC", "3050x2050", 33, 0, "PVC3 BLC", 0, "", ""],
+ ["PVC", "5", "BLANC", "3050x2050", 20, 0, "PVC5 BLC", 0, "", ""],
+ ["PVC", "10", "BLANC", "3050x2050", 10, 0, "PVC10 BLC", 0, "", ""],
+ ["PVC", "19", "BLANC", "3050x1550", 13, 0, "PVC19 BLC", 0, "", ""],
+ ["PVC", "30", "BLANC", "3050x1220", 2, 0, "PVC30 BLC", 6, "", ""],
+ ["PVC", "3", "NOIR", "3050x1560", 1, 0, "PVC3 NOR", 2, "", ""],
+ ["PVC", "5", "NOIR", "2770x1560", 2, 0, "PVC5 NOR", 0, "", ""],
+ ["PVC", "8", "NOIR", "3050x2050", 0, 0, "PVC8 NOR", 0, "", ""],
+ ["PVC", "10", "NOIR", "3050x2050", 2, 0, "PVC10 NOR", 0, "", ""],
+ ["PVC", "19", "NOIR", "3050x1550", 6, 0, "PVC19 NOR", 0, "", ""],
+ ["PVC", "8", "ROUGE", "3050x2050", 1, 0, "PVC8 ROG", 0, "", ""],
+ ["PVC KOMACEL", "1", "BLANC CHOC", "2000x1000", 8, 0, "PVC1 CHOC BLC ; classe CHOC a confirmer", 0, "", ""],
+ ["PVC KOMACEL", "3", "BLANC CHOC", "3000x1500", 4, 0, "PVC3 CHOC BLC", 0, "", ""],
+ ["PVC KOMACEL", "10", "BLANC CHOC", "", 0, 1, "PVC10 CHOC BLC : chute", 0, "", ""],
+ ["PVC KOMACEL", "19", "BLANC", "3000x1250", 0, 1, "PVC19 KOMACEL BLC : chute", 0, "", ""],
+ ["PVC KOMACEL", "19", "NOIR", "3000x1250", 4, 0, "PVC19 KOMACEL NOR", 0, "", ""],
+ ["MPLI", "19", "", "", 0, 1, "MPLI19 : chutes", 0, "", ""],
+ ["MPLI", "32", "", "", 0, 1, "MPLI32 : chutes", 0, "", ""],
+ ["PETG", "1", "TRANSPARENT (TRAINC)", "2050x1250", 3, 0, "A-PET1 TRAINC", 0, "", ""],
+ ["PETG", "4", "TRANSPARENT (TRAINC)", "3050x2050", 7, 0, "PETG4 TRAINC ; 1re ligne de la feuille", 0, "", ""],
+ ["PETG", "4", "TRANSPARENT (TRAINC)", "3050x2050", 5, 0, "PETG4 TRAINC ; 2e ligne de la feuille : a verifier", 0, "", ""],
+ ["PC", "1", "TRANSPARENT (TRAINC)", "2050x1250", 3, 0, "PC1 TRAINC", 0, "", ""],
+ ["PC UV", "3", "TRANSPARENT (TRAINC)", "3050x2050", 0, 4, "PCUV3 TRAINC : x4 chutes 2050x925", 0, "2050x925", ""],
+ ["PC", "4", "TRANSPARENT (TRAINC)", "3050x2050", 1, 0, "PC4 TRAINC", 0, "", ""],
+ ["PC", "6", "FUME", "3050x1330", 1, 0, "PC6 FUME", 0, "", ""],
+ ["PMMA", "3", "BLANC DIFFUSANT", "3050x2030", 19, 0, "PMMA3 BLCDIF", 0, "", ""],
+ ["PMMA", "4", "BLANC DIFFUSANT", "3050x2030", 1, 0, "PMMA4 BLCDIF", 0, "", ""],
+ ["PMMA", "8", "BLANC DIFFUSANT", "", 2, 0, "PMMA8 BLCDIF ; format non note", 0, "", ""],
+ ["PMMA", "10", "BLANC DIFFUSANT", "3050x2050", 0, 0, "PMMA10 BLCDIF", 1, "", ""],
+ ["PMMA", "15", "BLANC DIFFUSANT", "2030x1525", 1, 0, "PMMA15 BLCDIF", 0, "", ""],
+ ["PMMA", "20", "BLANC DIFFUSANT", "2030x1525", 1, 0, "PMMA20 BLCDIF", 0, "", ""],
+ ["PMMA", "30", "BLANC DIFFUSANT", "2030x1520", 2, 0, "PMMA30 BLCDIF", 0, "", ""],
+ ["PMMA", "3", "TRANSPARENT (TRAINC)", "3050x2030", 3, 0, "PMMA3 TRAINC", 0, "", ""],
+ ["PMMA", "5", "TRANSPARENT (TRAINC)", "3050x2030", 0, 0, "PMMA5 TRAINC", 6, "", ""],
+ ["PMMA", "6", "TRANSPARENT (TRAINC)", "3050x2030", 0, 0, "PMMA6 TRAINC", 1, "", ""],
+ ["PMMA", "8", "TRANSPARENT (TRAINC)", "1520x2050", 3, 0, "PMMA8 TRAINC", 0, "", ""],
+ ["PMMA", "10", "TRANSPARENT (TRAINC)", "1520x2030", 4, 0, "PMMA10 TRAINC", 0, "", ""],
+ ["PMMA", "15", "TRANSPARENT (TRAINC)", "2000x1500", 1, 0, "PMMA15 TRAINC", 0, "", ""],
+ ["PMMA", "20", "TRANSPARENT (TRAINC)", "2000x1200", 1, 0, "PMMA20 TRAINC", 0, "", ""],
+ ["PMMA", "25", "TRANSPARENT (TRAINC)", "2000x1200", 0, 1, "PMMA25 TRAINC : chute", 0, "", ""],
+ ["PMMA", "3", "BLANC OPAQUE", "3050x2030", 3, 0, "PMMA3 BLCOPQ MP74002/G", 0, "", ""],
+ ["PMMA", "10", "BLANC OPAQUE", "1520x2030", 1, 0, "PMMA10 BLCOPQ MP74309/A", 0, "", ""],
+ ["ALU", "1", "NOIR", "3000x1500", 5, 0, "ALU1 NOR", 0, "", ""],
+ ["ALU", "1", "BLANC", "3000x1500", 8, 0, "ALU1 BLC", 0, "", ""],
+ ["ALU", "1,5", "BLANC", "3000x1500", 1, 0, "ALU1,5 BLC", 0, "", ""],
+ ["ALU", "1", "BRUT", "3000x1500", 0, 0, "ALU1 BRUT", 0, "", ""],
+ ["ALU", "1,5", "BRUT", "3000x1500", 0, 0, "ALU1,5 BRUT", 0, "", ""],
+ ["ALU", "2", "BRUT", "3000x1500", 8, 0, "ALU2 BRUT", 0, "", ""],
+ ["CSTEEL", "3", "BLANC", "3050x1500", 4, 0, "CSTEEL3 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "2", "BLANC D2", "3050x1500", 4, 0, "COMP2D2 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D2", "2550x1250", 39, 0, "COMP3D2 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D2", "3050x1500", 33, 0, "COMP3D2 BLC ; 1 palette a commander", 1, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D2", "3050x2050", 44, 0, "COMP3D2 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D3", "3050x1500", 41, 0, "COMP3D3 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D3", "3050x2050", 14, 0, "COMP3D3 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D3", "4050x1500", 0, 0, "COMP3D3 BLC", 2, "", ""],
+ ["ALU COMPOSITE", "3", "NOIR D3", "4050x1500", 1, 0, "COMP3D3 NOR", 0, "", ""],
+ ["ALU COMPOSITE", "3", "BLANC D3", "4050x2000", 1, 0, "COMP3D3 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "6", "BLANC D3", "3050x2000", 0, 0, "COMP6D3 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "6", "BLANC D3", "3050x1500", 0, 0, "COMP6D3 BLC", 0, "", ""],
+ ["ALU COMPOSITE", "3", "EBASIC", "3050x1500", 4, 0, "COMP3 eBasic", 0, "", ""],
+ ["ALU COMPOSITE", "3", "RAL 1015", "3050x1500", 5, 1, "5+1 sur la feuille", 0, "", "IVO"],
+ ["ALU COMPOSITE", "3", "RAL 1023", "3050x1500", 4, 0, "", 0, "", "JAU"],
+ ["ALU COMPOSITE", "3", "RAL 3002", "3050x1500", 8, 0, "KFC", 0, "", "ROG"],
+ ["ALU COMPOSITE", "3", "RAL 3003", "3050x1500", 8, 0, "Panetière", 0, "", "ROG"],
+ ["ALU COMPOSITE", "3", "RAL 3004", "3050x1500", 0, 1, "PataNegra, chute", 0, "", "ROG"],
+ ["ALU COMPOSITE", "3", "RAL 3020", "3050x1500", 17, 0, "", 0, "", "ROG"],
+ ["ALU COMPOSITE", "3", "RAL 3020", "3050x2000", 17, 0, "", 0, "", "ROG"],
+ ["ALU COMPOSITE", "3", "RAL 5002", "3050x1500", 4, 1, "4+1 sur la feuille", 0, "", "BLE"],
+ ["ALU COMPOSITE", "3", "RAL 6005", "3050x1500", 15, 0, "", 0, "", "VET"],
+ ["ALU COMPOSITE", "3", "RAL 6005", "3050x2000", 1, 0, "", 0, "", "VET"],
+ ["ALU COMPOSITE", "3", "RAL 6018", "3050x2000", 3, 0, "", 0, "", "VET"],
+ ["ALU COMPOSITE", "3", "RAL 6024", "3050x2000", 2, 0, "", 0, "", "VET"],
+ ["ALU COMPOSITE", "3", "RAL 7011 / RAL 7047", "3050x2000", 27, 0, "un côté 7011, l'autre 7047", 0, "", "GRI"],
+ ["ALU COMPOSITE", "3", "RAL 7016", "3050x1500", 3, 0, "", 7, "", "GRI"],
+ ["ALU COMPOSITE", "3", "RAL 7016", "3050x2000", 4, 3, "4+3 sur la feuille : à vérifier", 5, "", "GRI"],
+ ["ALU COMPOSITE", "3", "RAL 9005", "3050x1500", 19, 0, "", 0, "", "NOR"],
+ ["ALU COMPOSITE", "3", "RAL 9005", "3050x2000", 2, 0, "", 10, "", "NOR"],
+ ["ALU COMPOSITE", "3", "RAL 9006", "3050x2000", 0, 1, "chute", 2, "", "MET"],
+ ["ALU COMPOSITE", "3", "ALU BROSSE ARGENT", "3050x1500", 3, 0, "COMP3 BROARG", 0, "", ""],
+ ["ALU COMPOSITE", "3", "ALU BROSSE OR", "3050x1500", 1, 0, "COMP3 BRO2OR", 0, "", ""],
+ ["ALU COMPOSITE", "3", "MIRROR SILVER", "3050x1250", 2, 0, "COMP3 MIRARG", 0, "", ""],
+ ["ALU COMPOSITE", "3", "MIRROR GOLD", "3050x1250", 1, 0, "COMP3 MIROR", 0, "", ""],
+ ["PMMA", "", "PERSPEX 133", "3050x2030", 2, 0, "épaisseur à renseigner", 0, "", "IVO"],
+ ["PMMA", "", "PERSPEX 4TL3", "3050x2030", 5, 0, "épaisseur à renseigner", 0, "", "ROG"],
+ ["PMMA", "", "PERSPEX 6TL1", "3050x2030", 5, 0, "épaisseur à renseigner", 0, "", "VET"],
+ ["PMMA", "", "ALTUGLAS CN100-12000", "3050x810", 0, 1, "chute ; épaisseur à renseigner", 0, "", "ROG"],
+ ["PMMA", "3", "PERSPEX 7TL1", "3050x2030", 3, 0, "stock PMMA3 de la feuille", 0, "", "BLE"],
+ ["PMMA", "3", "PERSPEX 2TL1", "3050x2030", 3, 0, "stock PMMA3 de la feuille", 0, "", "JAU"],
+ ["PMMA", "3", "PERSPEX 260", "3050x2030", 1, 0, "stock PMMA3 de la feuille", 0, "", "JAU"],
+ ["PMMA", "3", "PERSPEX 6T81", "3050x2030", 1, 0, "stock PMMA3 de la feuille", 0, "", "VET"],
+ ["PMMA", "3", "PERSPEX 750", "3050x2030", 1, 0, "stock PMMA3 de la feuille", 0, "", "BLE"],
+ ["PMMA", "3", "PERSPEX 2TL2", "3050x2030", 1, 0, "stock PMMA3 de la feuille", 0, "", "JAU"],
+ ["PMMA", "3", "MADREPERLA 02016/B", "3050x2030", 1, 0, "catalogue : MEDIAPOLE ; à confirmer", 0, "", "ORG"],
+ ["PMMA", "3", "ALTUGLAS CN100-23004", "3050x2030", 1, 0, "stock PMMA3 de la feuille", 0, "", "BLE"],
+ ["PMMA", "3", "ALTUGLAS CN100-24013", "3050x2030", 1, 0, "feuille : C100-24013", 0, "", "VET"],
+ ["PMMA", "3", "PERSPEX 9TL1", "3050x2030", 1, 0, "noir et blanc ; absent du catalogue", 0, "", "B&W"],
+ ["PMMA", "3", "MADREPERLA 76080/B", "3050x2030", 1, 0, "noir et blanc ; catalogue : MEDIAPOLE", 0, "", "B&W"],
+ ["PMMA", "3", "PERSPEX 3TL1", "3050x2030", 1, 0, "stock PMMA3 de la feuille", 0, "", "ORG"]
 ];
 var S, snap = null, toastT = null, view = "stock", mem = null;
-var F = {q:"", mat:"", low:false};
+var F = {q:"", mat:"", low:false, chu:false, by:"mat", zone:""};
 var C = {mode:"week", sel:{}, qty:{}, q:""};
 var editId = null;
 
@@ -294,28 +363,89 @@ function uid(){ uidN++; return "l" + Date.now().toString(36) + uidN + Math.rando
 function num(v, def){ var n = parseInt(String(v).replace(/[^0-9\-]/g, ""), 10); return isNaN(n) ? def : n; }
 
 function seedState(){
-  return {ver:1, seed:"05/11/2026", hint:true, settings:{to:"", cc:"", sig:"Publimax"}, log:[], orders:[],
-    lines: SEED.map(function(r){ return {id:uid(), mat:r[0], ep:r[1], coul:r[2], fmt:r[3], qty:r[4], chu:r[5], seuil:null, note:r[6]||"", pend:0, plan:r[7]||0}; })};
+  var lines = [];
+  SEED.forEach(function(r){
+    if (r[4] > 0 || !(r[5] > 0) || r[7] > 0) lines.push({id:uid(), mat:r[0], ep:r[1], coul:r[2], fmt:r[3], qty:r[4], seuil:null, note:r[6]||"", pend:0, plan:r[7]||0, fam:r[9]||"", chute:false, sup:"", loc:[]});
+    if (r[5] > 0) lines.push({id:uid(), mat:r[0], ep:r[1], coul:r[2], fmt:r[8] || (r[4] > 0 ? "" : r[3]), qty:r[5], seuil:null, note:(r[4] > 0 ? "chute (taille a preciser)" : r[6]) || "", pend:0, plan:0, fam:r[9]||"", chute:true, sup:"", loc:[]});
+  });
+  return {ver:3, seed:"05/11/2026", hint:true, settings:{to:"", cc:"", sig:"Publimax"}, log:[], orders:[], lines:lines, sups:[], zones:["Zone 6", "Zone 8", "Numérique"], matDef:{}, deliv:[]};
+}
+function migrate(o){
+  var add = [];
+  o.lines.forEach(function(l){
+    if (l.plan == null) l.plan = 0; if (l.pend == null) l.pend = 0; if (l.fam == null) l.fam = ""; if (l.chute == null) l.chute = false;
+    if (l.chu > 0 && !l.chute){ add.push({id:uid(), mat:l.mat, ep:l.ep, coul:l.coul, fmt:"", qty:l.chu, seuil:null, note:"chute (taille a preciser)", pend:0, plan:0, fam:l.fam, chute:true, sup:l.sup || "", loc:[]}); }
+    l.chu = 0; if (l.sup == null) l.sup = ""; if (!l.loc) l.loc = [];
+  });
+  if (!o.sups) o.sups = []; if (!o.zones) o.zones = ["Zone 6", "Zone 8", "Numérique"]; if (!o.matDef) o.matDef = {}; if (!o.deliv) o.deliv = [];
+  if (!o.log) o.log = []; if (!o.orders) o.orders = []; if (!o.settings) o.settings = {to:"", cc:"", sig:"Publimax"};
+  o.lines = o.lines.concat(add); o.ver = 3; return o;
 }
 function load(){
-  try { var raw = localStorage.getItem(KEY); if (raw){ var o = JSON.parse(raw); if (o && o.lines) return o; } } catch (e) {}
+  try { var raw = localStorage.getItem(KEY); if (raw){ var o = JSON.parse(raw); if (o && o.lines) return migrate(o); } } catch (e) {}
   return seedState();
 }
+/* couleurs de la feuille d'inventaire : une teinte par groupe */
+function colorOf(l){
+  var m = l.mat, c = (l.coul || "").toUpperCase(), n = (l.note || "").toUpperCase();
+  if (m === "PVC") return c.indexOf("NOIR") >= 0 ? "#A4A5AA" : (c.indexOf("ROUGE") >= 0 ? "#EAC6C9" : "#E2E3E6");
+  if (m === "PVC KOMACEL") return "#B0B3B8";
+  if (m === "MPLI") return "#D9A13A";
+  if (m === "PETG") return "#EDDB9C";
+  if (m === "PC" || m === "PC UV") return "#CDBFE2";
+  if (m === "PMMA") return c.indexOf("DIFFUSANT") >= 0 ? "#E6CFCC" : (c.indexOf("TRANSPARENT") >= 0 ? "#F1E7C4" : (c.indexOf("OPAQUE") >= 0 ? "#EEDDA0" : "#EBB445"));
+  if (m === "ALU") return c.indexOf("NOIR") >= 0 ? "#8C8D92" : "#B9BABF";
+  if (m === "CSTEEL") return "#C6D2D6";
+  if (m === "ALU COMPOSITE"){
+    if (c.indexOf("EBASIC") >= 0) return "#CBD6CE";
+    if (n.indexOf("COMP2D2") >= 0) return "#8FA9D8";
+    if (n.indexOf("D2") >= 0) return "#9DB5DD";
+    if (n.indexOf("D3") >= 0) return "#BFCEE9";
+    return "#ADC1E5";
+  }
+  return "#D9E1E3";
+}
+var FAM = {IVO:["#F1E8C8","#1B2529"], JAU:["#F2C230","#1B2529"], ROG:["#CF3B3B","#FFFFFF"], BLE:["#2F6BD0","#FFFFFF"], VET:["#2E9457","#FFFFFF"], GRI:["#8A8D93","#FFFFFF"], NOR:["#1F1F22","#FFFFFF"], MET:["#C9CCD2","#1B2529"], ORG:["#EE8A1F","#1B2529"], "B&W":["#FFFFFF","#1B2529"]};
+var RAL = {"1015":"#E6D2B5","1023":"#F2C500","3002":"#A12312","3003":"#8D1D2C","3004":"#6B1C23","3020":"#CC0605","5002":"#20358A","6005":"#1F4A37","6018":"#57A639","6024":"#308446","7016":"#383E42","9005":"#0E0E10","9006":"#A5A8A6","7011":"#43464B","7047":"#CFD0CF"};
+function plain(x){ x = String(x || "").toUpperCase(); try { x = x.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch (e) {} return x; }
+function plHtml(l){
+  var c = plain(l.coul), cls = "", bg = "", m = c.match(/RAL\s*(\d{4})(?:\s*\/\s*RAL\s*(\d{4}))?/), f = FAM[l.fam];
+  if (m){ var a = RAL[m[1]] || "#B9BABF", b = m[2] ? (RAL[m[2]] || "#B9BABF") : ""; bg = b ? "linear-gradient(135deg," + a + " 50%," + b + " 50%)" : a; }
+  else if (c.indexOf("TRANSPARENT") >= 0 || c.indexOf("TRAINC") >= 0 || c.indexOf("INCOLORE") >= 0) cls = " glass";
+  else if (c.indexOf("FUME") >= 0) cls = " smoke";
+  else if (c.indexOf("DIFFUSANT") >= 0) bg = "radial-gradient(circle at 40% 35%,#fff,#E9EEF2 70%,#D5DCE2)";
+  else if (c.indexOf("OPAQUE") >= 0) bg = "#F6F6F4";
+  else if (c.indexOf("BROSSE") >= 0) bg = c.indexOf("OR") >= 0 ? "repeating-linear-gradient(90deg,#CDAF63 0 2px,#DCC27F 2px 4px)" : "repeating-linear-gradient(90deg,#C4C7CB 0 2px,#DCDFE2 2px 4px)";
+  else if (c.indexOf("MIRROR GOLD") >= 0) bg = "linear-gradient(135deg,#F3DFA0,#B8923A 55%,#F3DFA0)";
+  else if (c.indexOf("MIRROR") >= 0) bg = "linear-gradient(135deg,#FFFFFF,#9AA1A8 55%,#F2F4F5)";
+  else if (c.indexOf("BRUT") >= 0) bg = "linear-gradient(135deg,#D2D5D8,#A9ADB2)";
+  else if (c.indexOf("EBASIC") >= 0) bg = "#CBD6CE";
+  else if (l.fam === "B&W") bg = "linear-gradient(135deg,#111 50%,#fff 50%)";
+  else if (f) bg = f[0];
+  else if (c.indexOf("NOIR") >= 0) bg = "#1E1E20";
+  else if (c.indexOf("ROUGE") >= 0) bg = "#C7373D";
+  else if (c.indexOf("BLANC") >= 0) bg = "#F7F7F5";
+  else bg = "#D9DEE1";
+  var th = Math.max(2, Math.min(6, Math.round((parseFloat(String(l.ep || "3").replace(",", ".")) || 3) / 4) + 2));
+  return '<div class="pl' + cls + '" style="--th:' + th + 'px' + (bg ? ';background:' + bg : '') + '"></div>';
+}
+function matC(m){ return colorOf({mat:m, coul:"", note:""}); }
+function famHtml(l){ var f = FAM[l.fam]; return f ? '<span class="fam" style="background:' + f[0] + ';color:' + f[1] + '">' + esc(l.fam) + '</span>' : ""; }
 var storeOk = true;
 function save(){
   try { localStorage.setItem(KEY, JSON.stringify(S)); storeOk = true; } catch (e) { storeOk = false; }
 }
-function label(l){ return (l.mat + " " + (l.ep ? l.ep + " mm " : "") + l.coul + " " + (l.fmt || "")).replace(/\s+/g, " ").trim(); }
+function label(l){ return ((l.chute ? "CHUTE " : "") + l.mat + " " + (l.ep ? l.ep + " mm " : "") + l.coul + " " + (l.fmt || "")).replace(/\s+/g, " ").trim(); }
 function title(l){ return (l.ep ? l.ep + " mm · " : "") + l.coul; }
 function fmtShow(f){ return String(f || "").replace(/x/i, " x "); }
-function under(l){ return l.seuil != null && l.qty <= l.seuil; }
-function needs(l){ return (l.plan || 0) > 0 || (l.seuil != null && (l.qty + (l.pend || 0)) <= l.seuil); }
+function under(l){ return !l.chute && l.seuil != null && l.qty <= l.seuil; }
+function needs(l){ return !l.chute && ((l.plan || 0) > 0 || (l.seuil != null && (l.qty + (l.pend || 0)) <= l.seuil)); }
 function suggest(l){ if ((l.plan || 0) > 0) return l.plan; return Math.max(1, (l.seuil || 0) - (l.qty + (l.pend || 0))); }
 function matRank(m){ var i = MATORDER.indexOf(m); return i < 0 ? 99 : i; }
 function sortLines(a, b){
   return (matRank(a.mat) - matRank(b.mat)) || a.mat.localeCompare(b.mat) ||
     ((parseFloat(String(a.ep).replace(",", ".")) || 0) - (parseFloat(String(b.ep).replace(",", ".")) || 0)) ||
-    a.coul.localeCompare(b.coul, "fr", {numeric:true}) || String(a.fmt).localeCompare(String(b.fmt), "fr", {numeric:true});
+    a.coul.localeCompare(b.coul, "fr", {numeric:true}) || ((a.chute ? 1 : 0) - (b.chute ? 1 : 0)) || String(a.fmt).localeCompare(String(b.fmt), "fr", {numeric:true});
 }
 function byId(id){ return S.lines.filter(function(l){ return l.id === id; })[0]; }
 
@@ -356,64 +486,95 @@ function toast(msg, undo){
 }
 $("#tundo").addEventListener("click", function(){
   if (!snap) return;
-  S = JSON.parse(snap); snap = null; save(); $("#toast").hidden = true; renderBadge(); render();
+  S = migrate(JSON.parse(snap)); snap = null; save(); $("#toast").hidden = true; renderBadge(); render(); if (!$("#sh2").hidden){ if (DV && delivById(DV.id)) renderDeliv(); else closeSh2(); }
 });
 
 /* ---------- vues ---------- */
 function renderBadge(){
   var n = S.lines.filter(needs).length, b = $("#navn");
   b.hidden = !n; b.textContent = n;
+  var m = (S.deliv || []).filter(function(d){ return dStatus(d) !== "done" || openRes(d) > 0; }).length, c = $("#navl");
+  c.hidden = !m; c.textContent = m;
 }
 function render(){
   var tabs = document.querySelectorAll("#nav button");
   for (var i = 0; i < tabs.length; i++){ if (tabs[i].dataset.v === view) tabs[i].setAttribute("aria-current", "page"); else tabs[i].removeAttribute("aria-current"); }
-  $("#fab").hidden = view !== "stock";
-  if (view === "stock") renderStock(); else if (view === "cmd") renderCmd(); else if (view === "wk") renderWk(); else renderSet();
+  $("#fabs").hidden = view !== "stock";
+  if (view === "stock") renderStock(); else if (view === "cmd") renderCmd(); else if (view === "liv") renderLiv(); else if (view === "fou") renderFou(); else if (view === "wk") renderWk(); else renderSet();
   renderBadge();
 }
+function lineText(l){ return (label(l) + " " + l.note + " " + supName(l.sup) + " " + (l.loc || []).map(locTxt).join(" ")).toLowerCase(); }
+function cardHtml(l){
+  var b = "";
+  if (under(l)) b += '<span class="badge bad">Sous seuil</span>';
+  if ((l.plan || 0) > 0) b += '<span class="badge warn">A commander : ' + l.plan + '</span>';
+  if (l.pend > 0) b += '<span class="badge warn">En commande : ' + l.pend + '</span>';
+  if (l.chute) b += '<span class="badge chu">Chute</span>';
+  var tg = (l.loc || []).map(function(o){ return '<span class="tag">' + esc(locTxt(o)) + '</span>'; }).join("");
+  return '<article class="card' + (under(l) ? " low" : "") + (l.chute ? " chute" : "") + '" style="--tc:' + colorOf(l) + '">' + plHtml(l) + '<div class="info" data-edit="' + l.id + '"><div class="t">' + esc(title(l)) + '</div><div class="s">' +
+    (l.fmt ? esc(fmtShow(l.fmt)) : (l.chute ? "taille à préciser" : "")) + (l.seuil != null ? ' · seuil ' + l.seuil : '') + (l.sup ? ' · ' + esc(supName(l.sup)) : '') + (l.note ? ' · ' + esc(l.note) : '') + '</div>' + (tg || b ? '<div>' + tg + b + '</div>' : '') + '</div>' +
+    '<div class="qty"><button type="button" data-d="-1" data-id="' + l.id + '" aria-label="Retirer une plaque">−</button>' +
+    '<input class="qi" inputmode="numeric" data-id="' + l.id + '" value="' + l.qty + '" aria-label="Quantité">' +
+    '<button type="button" data-d="1" data-id="' + l.id + '" aria-label="Ajouter une plaque">+</button></div></article>';
+}
 function renderStock(){
-  var mats = [], i;
+  var mats = [], q = F.q.toLowerCase(), byZone = F.by === "zone";
   S.lines.slice().sort(sortLines).forEach(function(l){ if (mats.indexOf(l.mat) < 0) mats.push(l.mat); });
-  var q = F.q.toLowerCase();
   var ls = S.lines.filter(function(l){
-    return (!F.mat || l.mat === F.mat) && (!F.low || under(l) || l.pend > 0 || (l.plan || 0) > 0) && (!q || (label(l) + " " + l.note).toLowerCase().indexOf(q) >= 0);
+    return (byZone || !F.mat || l.mat === F.mat) && (!F.chu || l.chute) && (!F.low || under(l) || l.pend > 0 || (l.plan || 0) > 0) && (!q || lineText(l).indexOf(q) >= 0);
   }).sort(sortLines);
   var h = "";
   if (S.hint) h += '<div class="hint"><span>Départ : inventaire du ' + esc(S.seed) + ', lu sur tes photos, avec la colonne « à commander S46 » reprise. Vérifie les lignes. Les seuils sont vides : touche une ligne pour en fixer un, ou règle-les d\'un coup dans Réglages.</span><button type="button" data-act="hint">OK</button></div>';
   if (!storeOk) h += '<div class="hint" style="background:var(--bad-soft)"><span>Ce navigateur refuse d\'enregistrer. Les chiffres seront perdus à la fermeture. Sors du mode privé.</span></div>';
-  h += '<div class="tools"><input class="search" id="q" type="search" placeholder="Chercher (couleur, format, code…)" value="' + esc(F.q) + '" aria-label="Chercher">';
-  h += '<div class="chips"><button class="chip" type="button" data-m="" aria-pressed="' + (!F.mat) + '">Tout</button>';
-  mats.forEach(function(m){ h += '<button class="chip" type="button" data-m="' + esc(m) + '" aria-pressed="' + (F.mat === m) + '">' + esc(m) + '</button>'; });
+  h += '<div class="tools"><input class="search" id="q" type="search" placeholder="Chercher (couleur, format, fournisseur, zone…)" value="' + esc(F.q) + '" aria-label="Chercher">';
+  h += '<div class="seg" style="margin:0"><button type="button" data-a="by" data-v="mat" aria-pressed="' + (!byZone) + '">Par matière</button><button type="button" data-a="by" data-v="zone" aria-pressed="' + byZone + '">Par zone</button></div>';
+  h += '<div class="chips">';
+  if (byZone){
+    h += '<button class="chip" type="button" data-a="zone" data-v="" aria-pressed="' + (!F.zone) + '">Toutes</button>';
+    S.zones.forEach(function(z){ h += '<button class="chip" type="button" data-a="zone" data-v="' + esc(z) + '" aria-pressed="' + (F.zone === z) + '">' + esc(z) + '</button>'; });
+    h += '<button class="chip" type="button" data-a="zone" data-v="__none" aria-pressed="' + (F.zone === "__none") + '">Sans emplacement</button>';
+  } else {
+    h += '<button class="chip" type="button" data-m="" aria-pressed="' + (!F.mat) + '">Tout</button>';
+    mats.forEach(function(m){ h += '<button class="chip mc" style="--tc:' + matC(m) + '" type="button" data-m="' + esc(m) + '" aria-pressed="' + (F.mat === m) + '">' + esc(m) + '</button>'; });
+  }
+  h += '<button class="chip" type="button" data-chu="1" aria-pressed="' + F.chu + '">Chutes</button>';
   h += '<button class="chip alert" type="button" data-low="1" aria-pressed="' + F.low + '">Sous seuil / en commande</button></div></div>';
-  if (!ls.length) h += '<div class="empty">Aucune plaque pour ce filtre.</div>';
-  var cur = null;
-  ls.forEach(function(l){
-    if (l.mat !== cur){ cur = l.mat; h += '<div class="grp">' + esc(cur) + '</div>'; }
-    var b = "";
-    if (under(l)) b += '<span class="badge bad">Sous seuil</span>';
-    if ((l.plan || 0) > 0) b += '<span class="badge warn">A commander : ' + l.plan + '</span>';
-    if (l.pend > 0) b += '<span class="badge warn">En commande : ' + l.pend + '</span>';
-    if (l.chu > 0) b += '<span class="badge chu">+ ' + l.chu + ' chute' + (l.chu > 1 ? "s" : "") + '</span>';
-    h += '<article class="card' + (under(l) ? " low" : "") + '"><div class="info" data-edit="' + l.id + '"><div class="t">' + esc(title(l)) + '</div><div class="s">' +
-      esc(fmtShow(l.fmt)) + (l.seuil != null ? ' · seuil ' + l.seuil : '') + (l.note ? ' · ' + esc(l.note) : '') + '</div>' + (b ? '<div>' + b + '</div>' : '') + '</div>' +
-      '<div class="qty"><button type="button" data-d="-1" data-id="' + l.id + '" aria-label="Retirer une plaque">−</button>' +
-      '<input class="qi" inputmode="numeric" data-id="' + l.id + '" value="' + l.qty + '" aria-label="Quantité">' +
-      '<button type="button" data-d="1" data-id="' + l.id + '" aria-label="Ajouter une plaque">+</button></div></article>';
-  });
+  if (!byZone){
+    if (!ls.length) h += '<div class="empty">Aucune plaque pour ce filtre.</div>';
+    var cur = null;
+    ls.forEach(function(l){ if (l.mat !== cur){ cur = l.mat; h += '<div class="grp mc" style="--tc:' + matC(cur) + '">' + esc(cur) + '</div>'; } h += cardHtml(l); });
+  } else {
+    var en = [];
+    ls.forEach(function(l){
+      if (!l.loc.length) en.push({z:"Sans emplacement", e:-1, c:"", l:l, none:true});
+      else l.loc.forEach(function(o){ en.push({z:o.z, e:o.e, c:o.c, l:l}); });
+    });
+    en = en.filter(function(x){ return !F.zone || (F.zone === "__none" ? x.none : x.z === F.zone); });
+    var zr = function(z){ var i = S.zones.indexOf(z); return z === "Sans emplacement" ? 999 : (i < 0 ? 500 : i); };
+    en.sort(function(a, b){ return (zr(a.z) - zr(b.z)) || a.z.localeCompare(b.z, "fr") || (a.e - b.e) || a.c.localeCompare(b.c) || sortLines(a.l, b.l); });
+    if (!en.length) h += '<div class="empty">Aucune plaque pour ce filtre.</div>';
+    var cz = null, cs = null;
+    en.forEach(function(x){
+      if (x.z !== cz){ cz = x.z; cs = null; h += '<div class="grp" style="font-size:14px">' + esc(cz) + '</div>'; }
+      if (!x.none){ var k = x.e + "|" + x.c; if (k !== cs){ cs = k; h += '<div class="s" style="margin:8px 0 4px;font-weight:bold;color:var(--muted)">' + (x.e === 0 ? "Sol" : "Étage " + x.e) + ' · colonne ' + esc(x.c) + '</div>'; } }
+      h += cardHtml(x.l);
+    });
+  }
   $("#main").innerHTML = h;
 }
 function cmdItems(){
   var ls = S.lines.slice().sort(sortLines);
   if (C.mode === "week") return ls.filter(needs);
   var q = C.q.toLowerCase();
-  return ls.filter(function(l){ return !q || (label(l) + " " + l.note).toLowerCase().indexOf(q) >= 0; })
+  return ls.filter(function(l){ return !l.chute && (!q || (label(l) + " " + l.note).toLowerCase().indexOf(q) >= 0); })
     .sort(function(a, b){ return (needs(b) ? 1 : 0) - (needs(a) ? 1 : 0); });
 }
 function cmdSel(l){ var v = C.sel[l.id]; return v == null ? (C.mode === "week") : v; }
 function cmdQty(l){ var v = C.qty[l.id]; return v == null ? (C.mode === "week" ? suggest(l) : Math.max(1, suggest(l))) : v; }
-function composeText(items){
+function composeText(items, sid){
   var urg = C.mode === "urgent", now = Date.now(), w = isoWeek(now).w, t = [];
   t.push(urg ? "COMMANDE URGENTE - Publimax" : "COMMANDE - Publimax");
+  if (sid) t.push("Fournisseur : " + supName(sid));
   t.push("Semaine " + w + " - " + dfull(now)); t.push("");
   items.forEach(function(x){ t.push("- " + label(x.l) + " : " + x.q + " plaque" + (x.q > 1 ? "s" : "")); });
   t.push("");
@@ -421,8 +582,8 @@ function composeText(items){
   t.push("Merci de confirmer la disponibilité et le délai."); t.push(S.settings.sig || "");
   return t.join("\n");
 }
-function cmdChosen(){
-  return cmdItems().filter(cmdSel).map(function(l){ return {l:l, q:cmdQty(l)}; }).filter(function(x){ return x.q > 0; });
+function cmdChosenFor(k){
+  return cmdItems().filter(function(l){ return (l.sup || "") === k && cmdSel(l); }).map(function(l){ return {l:l, q:cmdQty(l)}; }).filter(function(x){ return x.q > 0; });
 }
 function renderCmd(){
   var items = cmdItems(), urg = C.mode === "urgent", h = "";
@@ -434,15 +595,25 @@ function renderCmd(){
   } else {
     h += '<h2>Commande urgente</h2><div class="tools"><input class="search" id="cq" type="search" placeholder="Chercher la plaque à commander" value="' + esc(C.q) + '" aria-label="Chercher"></div>';
   }
-  items.forEach(function(l){
-    h += '<div class="row"><input type="checkbox" data-sel="' + l.id + '"' + (cmdSel(l) ? " checked" : "") + ' aria-label="Commander"><div class="info"><div class="t">' + esc(label(l)) + '</div><div class="s">stock ' + l.qty + (l.pend ? ' + ' + l.pend + ' en commande' : '') + (l.seuil != null ? ' · seuil ' + l.seuil : '') + '</div></div><input class="qi" inputmode="numeric" data-cq="' + l.id + '" value="' + cmdQty(l) + '" aria-label="Quantité à commander"></div>';
+  var gs = {}, order = [];
+  items.forEach(function(l){ var k = l.sup || ""; if (!gs[k]){ gs[k] = []; order.push(k); } gs[k].push(l); });
+  order.sort(function(a, b){ return (a === "") - (b === "") || supName(a).localeCompare(supName(b), "fr"); });
+  var any = 0;
+  order.forEach(function(k){
+    h += '<div class="grp">' + esc(supName(k)) + '</div>';
+    gs[k].forEach(function(l){
+      h += '<div class="row"><input type="checkbox" data-sel="' + l.id + '"' + (cmdSel(l) ? " checked" : "") + ' aria-label="Commander">' + plHtml(l) + '<div class="info"><div class="t">' + esc(label(l)) + '</div><div class="s">stock ' + l.qty + (l.pend ? ' + ' + l.pend + ' en commande' : '') + (l.seuil != null ? ' · seuil ' + l.seuil : '') + '</div></div><input class="qi" inputmode="numeric" data-cq="' + l.id + '" value="' + cmdQty(l) + '" aria-label="Quantité à commander"></div>';
+    });
+    var ch = cmdChosenFor(k);
+    if (ch.length){
+      any++;
+      var sid = k || "none";
+      h += '<textarea class="msg" id="msg-' + sid + '" readonly aria-label="Texte de la commande">' + esc(composeText(ch, k)) + '</textarea>';
+      h += '<div class="btns"><button class="btn" type="button" data-act="copy" data-sup="' + k + '">Copier le texte</button><button class="btn" type="button" data-act="mail" data-sup="' + k + '">Ouvrir le mail</button><button class="btn ' + (urg ? "urg" : "main") + '" type="button" data-act="place" data-sup="' + k + '">Enregistrer la commande</button></div>';
+    }
   });
-  var ch = cmdChosen();
-  if (ch.length){
-    h += '<textarea class="msg" id="msg" readonly aria-label="Texte de la commande">' + esc(composeText(ch)) + '</textarea>';
-    h += '<div class="btns"><button class="btn" type="button" data-act="copy">Copier le texte</button><button class="btn" type="button" data-act="mail">Ouvrir le mail</button><button class="btn ' + (urg ? "urg" : "main") + '" type="button" data-act="place">Enregistrer la commande</button></div>';
-    h += '<p style="font-size:13px;color:var(--muted)">« Enregistrer » marque ces plaques « en commande » : elles disparaissent de la liste de fin de semaine, et le stock monte quand tu fais + à la réception.</p>';
-  } else if (urg) h += '<div class="empty">Coche les plaques à commander.</div>';
+  if (any) h += '<p style="font-size:13px;color:var(--muted)">« Enregistrer » marque ces plaques « en commande » et crée la livraison attendue dans l\'onglet Livraisons.</p>';
+  else if (urg) h += '<div class="empty">Coche les plaques à commander.</div>';
   $("#main").innerHTML = h;
 }
 function renderWk(){
@@ -477,46 +648,78 @@ function renderWk(){
 function renderSet(){
   var st = S.settings, h = "";
   h += '<h2>Réglages</h2>';
-  h += '<div class="set"><h3>Commande par mail</h3><div class="field"><label for="sto">Destinataire</label><input id="sto" type="email" inputmode="email" value="' + esc(st.to) + '" placeholder="adresse du fournisseur"></div>' +
+  h += '<div class="set"><h3>Commande par mail</h3><p>Adresse utilisée quand le fournisseur n\'a pas de mail dans sa fiche.</p><div class="field"><label for="sto">Destinataire par défaut</label><input id="sto" type="email" inputmode="email" value="' + esc(st.to) + '" placeholder="adresse du fournisseur"></div>' +
     '<div class="field"><label for="scc">Copie</label><input id="scc" type="email" inputmode="email" value="' + esc(st.cc) + '"></div>' +
     '<div class="field"><label for="ssig">Signature</label><input id="ssig" value="' + esc(st.sig) + '"></div></div>';
+  h += '<div class="set"><h3>Zones de rangement</h3><p>Étage 0 = au sol, 1 = premier rayonnage… Colonne A = la plus à gauche.</p>' + S.zones.map(function(z){
+    var n = S.lines.filter(function(l){ return l.loc.some(function(o){ return o.z === z; }); }).length;
+    return '<div class="inline" style="margin-bottom:6px"><input data-ch="zren" data-z="' + esc(z) + '" value="' + esc(z) + '" aria-label="Nom de la zone"><button class="btn" type="button" data-a="zdel" data-z="' + esc(z) + '" style="flex:none">Suppr. (' + n + ')</button></div>';
+  }).join("") + '<div class="inline"><input id="znew" placeholder="Nouvelle zone"><button class="btn" type="button" data-a="zadd" style="flex:none">Ajouter</button></div></div>';
   h += '<div class="set"><h3>Seuil de commande pour toutes les lignes sans seuil</h3><p>Il s\'applique seulement aux lignes dont le seuil est vide. Tu ajustes ensuite ligne par ligne.</p><div class="inline"><input id="sbulk" inputmode="numeric" placeholder="ex. 3" aria-label="Seuil"><button class="btn" type="button" data-act="bulk" style="flex:none">Appliquer</button></div></div>';
   var hasPin = !!lget(PINK);
   h += '<div class="set"><h3>Code d\'accès</h3><p>' + (hasPin ? 'Un code à 4 chiffres est demandé à chaque ouverture. Si tu l\'oublies, il faut vider les données du site, donc tout le stock est perdu : garde un export.' : 'Aucun code. N\'importe qui avec ce téléphone peut modifier le stock.') + '</p><div class="btns"><button class="btn" type="button" data-act="pinset">' + (hasPin ? 'Changer le code' : 'Mettre un code') + '</button>' + (hasPin ? '<button class="btn danger" type="button" data-act="pinoff">Retirer le code</button>' : '') + '</div></div>';
+  h += '<div class="set"><h3>Historique par semaine</h3><p>Tous les mouvements et commandes, empilés par semaine.</p><button class="btn" type="button" data-a="gowk">Voir les semaines</button></div>';
   h += '<div class="set"><h3>Installer sur le téléphone</h3><p>Une barre « Installer » apparaît en haut de l\'écran quand c\'est possible. Sinon, dans Chrome : menu ⋮ > Installer l\'application (ou Ajouter à l\'écran d\'accueil).</p></div>';
-  h += '<div class="set"><h3>Sauvegarde</h3><p>Les chiffres sont gardés dans ce navigateur, sur cet appareil. Pour les passer du téléphone au PC : exporter ici, importer là.</p><div class="btns"><button class="btn" type="button" data-act="export">Exporter</button><label class="btn" style="text-align:center">Importer<input id="simp" type="file" accept="application/json,.json" hidden></label></div></div>';
-  h += '<div class="set"><h3>Repartir de l\'inventaire du ' + esc(S.seed) + '</h3><p>Efface les quantités, les mouvements et les commandes enregistrés, et recharge la liste de départ.</p><button class="btn danger" type="button" data-act="reset" id="sreset">Tout remettre à zéro</button></div>';
+  h += '<div class="set"><h3>Sauvegarde</h3><p>Les chiffres sont gardés dans ce navigateur, sur cet appareil. L\'export contient le stock, les fournisseurs et les livraisons, <b>pas les photos</b> (elles restent dans ce téléphone).</p><div class="btns"><button class="btn" type="button" data-act="export">Exporter</button><label class="btn" style="text-align:center">Importer<input id="simp" type="file" accept="application/json,.json" hidden></label></div></div>';
+  h += '<div class="set"><h3>Repartir de l\'inventaire du ' + esc(S.seed) + '</h3><p>Efface les quantités, les mouvements, les commandes, les livraisons et les photos, et recharge la liste de départ. Les fournisseurs sont effacés aussi.</p><button class="btn danger" type="button" data-act="reset" id="sreset">Tout remettre à zéro</button></div>';
   $("#main").innerHTML = h;
 }
 
 /* ---------- formulaire ---------- */
-function openSheet(id){
+function formType(){ return $("#ftype").value; }
+function formLayout(){
+  var ch = formType() === "chute";
+  $("#ffmtl").textContent = ch ? "Taille de la chute (mm)" : "Taille de la plaque (mm)";
+  $("#fseuilw").hidden = ch; $("#fsrcw").hidden = !(ch && !editId);
+}
+function openSheet(id, type){
   editId = id; var l = id ? byId(id) : null;
-  $("#ft").textContent = l ? "Modifier la plaque" : "Nouvelle plaque";
+  var ty = l ? (l.chute ? "chute" : "plaque") : (type || "plaque");
+  $("#ftype").value = ty; $("#ftype").disabled = !!l;
+  $("#ft").textContent = (l ? "Modifier la " : "Nouvelle ") + (ty === "chute" ? "chute" : "plaque");
   var mats = []; S.lines.forEach(function(x){ if (mats.indexOf(x.mat) < 0) mats.push(x.mat); });
   $("#matl").innerHTML = mats.map(function(m){ return '<option value="' + esc(m) + '">'; }).join("");
+  var src = '<option value="">Aucune</option>';
+  S.lines.filter(function(x){ return !x.chute; }).sort(sortLines).forEach(function(x){ src += '<option value="' + x.id + '">' + esc(label(x)) + '</option>'; });
+  $("#fsrc").innerHTML = src; $("#fretire").checked = false; $("#fall").checked = false;
   $("#fmat").value = l ? l.mat : (F.mat || ""); $("#fep").value = l ? l.ep : ""; $("#fcoul").value = l ? l.coul : "";
-  $("#ffmt").value = l ? l.fmt : ""; $("#fqty").value = l ? l.qty : ""; $("#fchu").value = l ? l.chu : "";
+  $("#ffmt").value = l ? l.fmt : ""; $("#fqty").value = l ? l.qty : ""; $("#ffam").value = l ? (l.fam || "") : "";
   $("#fseuil").value = l && l.seuil != null ? l.seuil : ""; $("#fnote").value = l ? l.note : "";
+  fillSup(l ? l.sup : ""); setLocs(l ? l.loc : []);
   $("#ferr").textContent = ""; $("#fdel").hidden = !l; $("#fdel").textContent = "Supprimer";
+  formLayout();
   $("#sheet").hidden = false; setTimeout(function(){ $(l ? "#fqty" : "#fmat").focus(); }, 50);
 }
+$("#ftype").addEventListener("change", formLayout);
+$("#fsrc").addEventListener("change", function(){
+  var x = byId($("#fsrc").value); if (!x) return;
+  $("#fmat").value = x.mat; $("#fep").value = x.ep; $("#fcoul").value = x.coul; $("#ffam").value = x.fam || ""; $("#fretire").checked = true; $("#fsup").value = x.sup || "";
+});
 function closeSheet(){ $("#sheet").hidden = true; editId = null; }
 $("#f").addEventListener("submit", function(e){
   e.preventDefault();
+  var isCh = formType() === "chute";
   var mat = $("#fmat").value.trim().toUpperCase(), coul = $("#fcoul").value.trim().toUpperCase(), fmt = $("#ffmt").value.trim().toLowerCase().replace(/\s+/g, "").replace("×", "x");
   if (!mat || !coul){ $("#ferr").textContent = "Matière et couleur sont obligatoires."; return; }
-  var qty = Math.max(0, num($("#fqty").value, 0)), chu = Math.max(0, num($("#fchu").value, 0)), sv = $("#fseuil").value.trim();
-  var seuil = sv === "" ? null : Math.max(0, num(sv, 0));
+  var qty = Math.max(0, num($("#fqty").value, isCh && !editId ? 1 : 0)), sv = $("#fseuil").value.trim();
+  var seuil = (isCh || sv === "") ? null : Math.max(0, num(sv, 0));
+  var sup = $("#fsup").value, locs = collectLocs();
   snapshot();
   var l = editId ? byId(editId) : null;
   if (l){
     var old = l.qty;
-    l.mat = mat; l.ep = $("#fep").value.trim().replace(".", ","); l.coul = coul; l.fmt = fmt; l.chu = chu; l.seuil = seuil; l.note = $("#fnote").value.trim(); l.qty = qty;
+    l.mat = mat; l.ep = $("#fep").value.trim().replace(".", ","); l.coul = coul; l.fmt = fmt; l.seuil = seuil; l.note = $("#fnote").value.trim(); l.qty = qty; l.fam = $("#ffam").value; l.sup = sup; l.loc = locs;
     if (qty !== old) addLog(l.id, "comptage", qty - old, qty);
   } else {
-    l = {id:uid(), mat:mat, ep:$("#fep").value.trim().replace(".", ","), coul:coul, fmt:fmt, qty:qty, chu:chu, seuil:seuil, note:$("#fnote").value.trim(), pend:0};
-    S.lines.push(l); if (qty) addLog(l.id, "comptage", qty, qty);
+    l = {id:uid(), mat:mat, ep:$("#fep").value.trim().replace(".", ","), coul:coul, fmt:fmt, qty:qty, seuil:seuil, note:$("#fnote").value.trim(), pend:0, plan:0, fam:$("#ffam").value, chute:isCh, sup:sup, loc:locs};
+    S.lines.push(l);
+    var srcL = isCh ? byId($("#fsrc").value) : null;
+    if (srcL && $("#fretire").checked && srcL.qty > 0){ srcL.qty -= 1; addLog(srcL.id, "sortie", -1, srcL.qty); }
+    if (qty) addLog(l.id, "entree", qty, qty);
+  }
+  if ($("#fall").checked){
+    S.lines.forEach(function(x){ if (x.mat === mat){ x.sup = sup; x.loc = JSON.parse(JSON.stringify(locs)); } });
+    S.matDef[mat] = {sup:sup, loc:JSON.parse(JSON.stringify(locs))};
   }
   save(); closeSheet(); render(); toast("Enregistré", true);
 });
@@ -524,9 +727,10 @@ $("#fclose").addEventListener("click", closeSheet);
 $("#sheet").addEventListener("click", function(e){ if (e.target === $("#sheet")) closeSheet(); });
 $("#fdel").addEventListener("click", function(){
   if ($("#fdel").textContent === "Supprimer"){ $("#fdel").textContent = "Confirmer la suppression"; return; }
-  snapshot(); S.lines = S.lines.filter(function(x){ return x.id !== editId; }); save(); closeSheet(); render(); toast("Plaque supprimée", true);
+  snapshot(); S.lines = S.lines.filter(function(x){ return x.id !== editId; }); save(); closeSheet(); render(); toast("Ligne supprimée", true);
 });
-$("#fab").addEventListener("click", function(){ openSheet(null); });
+$("#fab").addEventListener("click", function(){ openSheet(null, "plaque"); });
+$("#fabc").addEventListener("click", function(){ openSheet(null, "chute"); });
 
 /* ---------- événements ---------- */
 $("#nav").addEventListener("click", function(e){ var b = e.target.closest("button[data-v]"); if (!b) return; view = b.dataset.v; render(); window.scrollTo(0, 0); });
@@ -536,8 +740,9 @@ $("#main").addEventListener("click", function(e){
   if ((b = t.closest("[data-edit]"))){ openSheet(b.dataset.edit); return; }
   if ((b = t.closest("[data-m]"))){ F.mat = b.dataset.m; renderStock(); return; }
   if ((b = t.closest("[data-low]"))){ F.low = !F.low; renderStock(); return; }
+  if ((b = t.closest("[data-chu]"))){ F.chu = !F.chu; renderStock(); return; }
   if ((b = t.closest("[data-mode]"))){ C.mode = b.dataset.mode; renderCmd(); return; }
-  if ((b = t.closest("[data-act]"))) act(b.dataset.act);
+  if ((b = t.closest("[data-act]"))) act(b.dataset.act, b);
 });
 $("#main").addEventListener("input", function(e){
   if (e.target.id === "q"){ F.q = e.target.value; var p = e.target.selectionStart; renderStock(); var q = $("#q"); q.focus(); try { q.setSelectionRange(p, p); } catch (x) {} }
@@ -555,27 +760,28 @@ $("#main").addEventListener("change", function(e){
 });
 $("#main").addEventListener("focusin", function(e){ if (e.target.classList && e.target.classList.contains("qi")) e.target.select(); });
 
-function act(a){
+function act(a, btn){
   if (a === "pinset"){ showLock("new", "settings"); }
   else if (a === "pinoff"){ lset(PINK, ""); try { localStorage.removeItem(PINK); } catch (e) {} lset(NOPK, "1"); renderSet(); toast("Code retiré", false); }
   else if (a === "hint"){ S.hint = false; save(); renderStock(); }
   else if (a === "copy"){
-    var txt = composeText(cmdChosen()), ta = $("#msg");
+    var k = btn.dataset.sup || "", txt = composeText(cmdChosenFor(k), k), ta = $("#msg-" + (k || "none"));
     var fb = function(){ ta.removeAttribute("readonly"); ta.focus(); ta.select(); toast("Sélectionné : copie à la main", false); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){ toast("Texte copié", false); }, fb); else fb();
   }
   else if (a === "mail"){
-    var urg = C.mode === "urgent", ch = cmdChosen(), w = isoWeek(Date.now()).w;
+    var k2 = btn.dataset.sup || "", urg = C.mode === "urgent", ch = cmdChosenFor(k2), w = isoWeek(Date.now()).w, sp = supById(k2);
     var sub = (urg ? "COMMANDE URGENTE" : "Commande") + " Publimax - semaine " + w;
-    var url = "mailto:" + encodeURIComponent(S.settings.to || "") + "?subject=" + encodeURIComponent(sub) + (S.settings.cc ? "&cc=" + encodeURIComponent(S.settings.cc) : "") + "&body=" + encodeURIComponent(composeText(ch));
-    window.location.href = url;
+    var to = (sp && sp.mail) ? sp.mail : (S.settings.to || "");
+    window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(sub) + (S.settings.cc ? "&cc=" + encodeURIComponent(S.settings.cc) : "") + "&body=" + encodeURIComponent(composeText(ch, k2));
   }
   else if (a === "place"){
-    var items = cmdChosen(); if (!items.length) return;
+    var k3 = btn.dataset.sup || "", items = cmdChosenFor(k3); if (!items.length) return;
     snapshot();
-    S.orders.unshift({id:uid(), t:Date.now(), urgent:C.mode === "urgent", items:items.map(function(x){ return {id:x.l.id, lbl:label(x.l), qty:x.q}; })});
+    var o = {id:uid(), t:Date.now(), urgent:C.mode === "urgent", sup:k3, items:items.map(function(x){ return {id:x.l.id, lbl:label(x.l), qty:x.q}; })};
+    S.orders.unshift(o); S.deliv.unshift(mkDeliv(k3, o.urgent, items, o.id));
     items.forEach(function(x){ x.l.plan = 0; x.l.pend = (x.l.pend || 0) + x.q; delete C.sel[x.l.id]; delete C.qty[x.l.id]; });
-    save(); render(); toast("Commande enregistrée : " + items.length + " ligne" + (items.length > 1 ? "s" : ""), true);
+    save(); render(); toast("Commande enregistrée chez " + supName(k3) + " : livraison attendue créée", true);
   }
   else if (a === "bulk"){
     var v = $("#sbulk").value.trim(); if (v === ""){ toast("Tape un seuil.", false); return; }
@@ -591,7 +797,7 @@ function act(a){
   else if (a === "reset"){
     var b = $("#sreset");
     if (b.textContent !== "Confirmer : tout effacer"){ b.textContent = "Confirmer : tout effacer"; return; }
-    S = seedState(); snap = null; save(); view = "stock"; render(); toast("Liste de départ rechargée", false);
+    S = seedState(); snap = null; save(); photoClear(); view = "stock"; render(); toast("Liste de départ rechargée", false);
   }
 }
 function importFile(f){
@@ -600,7 +806,7 @@ function importFile(f){
     try {
       var o = JSON.parse(r.result);
       if (!o || !Array.isArray(o.lines)) throw new Error("format");
-      snapshot(); S = o; if (!S.log) S.log = []; if (!S.orders) S.orders = []; if (!S.settings) S.settings = {to:"", cc:"", sig:"Publimax"};
+      snapshot(); S = migrate(o); 
       save(); render(); toast("Sauvegarde importée : " + S.lines.length + " lignes", true);
     } catch (e) { toast("Fichier non reconnu.", false); }
   };
@@ -642,6 +848,445 @@ $("#ls").addEventListener("click", function(){
   if (lockFrom === "boot" && lockMode === "new" && !lockTmp){ lset(NOPK, "1"); unlock(); return; }
   if (lockFrom === "boot"){ showLock("new", "boot"); return; }
   $("#lock").hidden = true;
+});
+/* ================= fournisseurs, emplacements, livraisons, photos ================= */
+var A = {}, CH = {};
+var FS = {sel:""}, SF = {id:""}, LV = {f:"open"}, DV = null, DN = {sup:"", q:"", qty:{}}, PCTX = null, URLS = {};
+function supById(id){ return (S.sups || []).filter(function(x){ return x.id === id; })[0]; }
+function supName(id){ var s = supById(id); return s ? s.name : (id ? "Fournisseur supprimé" : "Sans fournisseur"); }
+function locTxt(o){ return o.z + " · " + (o.e === 0 ? "sol" : "étage " + o.e) + " · " + o.c; }
+function delivById(id){ return (S.deliv || []).filter(function(d){ return d.id === id; })[0]; }
+function remOf(d){ return d.items.reduce(function(a, i){ return a + Math.max(0, i.att - i.recu); }, 0); }
+function dStatus(d){ if (d.closed) return "done"; if (!d.hist.length) return "wait"; return remOf(d) > 0 ? "rel" : "done"; }
+function openRes(d){ return d.res.filter(function(r){ return r.open; }).length; }
+function statusLabel(d){ var s = dStatus(d); return s === "wait" ? "À recevoir" : (s === "rel" ? "Relicat : " + remOf(d) : "Terminée"); }
+function copyText(t){ try { if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).catch(function(){}); } catch (e) {} return Promise.resolve(); }
+function showSh2(){ $("#sh2").hidden = false; }
+function closeSh2(){ $("#sh2").hidden = true; DV = null; $("#sh2p").innerHTML = ""; render(); }
+function onA(e){ var b = e.target.closest("[data-a]"); if (!b) return; var f = A[b.dataset.a]; if (f) f(b, e); }
+function onCh(e){ var t = e.target, k = t.dataset && (e.type === "input" ? t.dataset["in"] : t.dataset.ch); if (k && CH[k]) CH[k](t, e); }
+$("#main").addEventListener("click", onA); $("#sh2p").addEventListener("click", onA);
+$("#main").addEventListener("change", onCh); $("#sh2p").addEventListener("change", onCh);
+$("#main").addEventListener("input", onCh); $("#sh2p").addEventListener("input", onCh);
+$("#sh2").addEventListener("click", function(e){ if (e.target === $("#sh2")) closeSh2(); });
+A.close2 = function(){ closeSh2(); };
+
+/* ---------- photos (IndexedDB, compressees) ---------- */
+var idbP = null;
+function idb(){
+  if (idbP) return idbP;
+  idbP = new Promise(function(res, rej){
+    var r = indexedDB.open("publimax_stock_photos", 1);
+    r.onupgradeneeded = function(){ r.result.createObjectStore("p", {keyPath:"id"}); };
+    r.onsuccess = function(){ res(r.result); }; r.onerror = function(){ rej(r.error); };
+  });
+  return idbP;
+}
+function photoPut(blob){
+  var id = "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  return idb().then(function(db){ return new Promise(function(res, rej){ var tx = db.transaction("p", "readwrite"); tx.objectStore("p").put({id:id, blob:blob}); tx.oncomplete = function(){ res(id); }; tx.onerror = function(){ rej(tx.error); }; }); });
+}
+function photoGet(id){
+  return idb().then(function(db){ return new Promise(function(res, rej){ var r = db.transaction("p").objectStore("p").get(id); r.onsuccess = function(){ res(r.result ? r.result.blob : null); }; r.onerror = function(){ rej(r.error); }; }); });
+}
+function photoDel(id){
+  if (URLS[id]){ try { URL.revokeObjectURL(URLS[id]); } catch (e) {} delete URLS[id]; }
+  return idb().then(function(db){ return new Promise(function(res){ var tx = db.transaction("p", "readwrite"); tx.objectStore("p").delete(id); tx.oncomplete = function(){ res(); }; tx.onerror = function(){ res(); }; }); }).catch(function(){});
+}
+function photoClear(){
+  Object.keys(URLS).forEach(function(k){ try { URL.revokeObjectURL(URLS[k]); } catch (e) {} }); URLS = {};
+  return idb().then(function(db){ return new Promise(function(res){ var tx = db.transaction("p", "readwrite"); tx.objectStore("p").clear(); tx.oncomplete = function(){ res(); }; tx.onerror = function(){ res(); }; }); }).catch(function(){});
+}
+function photoURL(id){
+  if (URLS[id]) return Promise.resolve(URLS[id]);
+  return photoGet(id).then(function(b){ if (!b) return ""; URLS[id] = URL.createObjectURL(b); return URLS[id]; });
+}
+function hydrate(root){
+  var els = root.querySelectorAll("[data-ph]");
+  for (var i = 0; i < els.length; i++){ (function(el){ photoURL(el.dataset.ph).then(function(u){ if (u) el.style.backgroundImage = 'url("' + u + '")'; }); })(els[i]); }
+}
+function shrink(file){
+  return new Promise(function(res, rej){
+    var u = URL.createObjectURL(file), im = new Image();
+    im.onload = function(){
+      var m = 1280, w = im.naturalWidth, h = im.naturalHeight, k = Math.min(1, m / Math.max(w, h));
+      var c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+      c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+      c.toBlob(function(b){ URL.revokeObjectURL(u); if (b) res(b); else rej(new Error("toBlob")); }, "image/jpeg", 0.72);
+    };
+    im.onerror = function(){ URL.revokeObjectURL(u); rej(new Error("img")); };
+    im.src = u;
+  });
+}
+function thumbs(ids, ctx, del){
+  if (!ids.length) return '<div class="s" style="color:var(--muted);margin:6px 0">Aucune photo</div>';
+  return '<div class="phs">' + ids.map(function(id){
+    return '<div class="ph" data-ph="' + id + '" data-a="phview" data-id="' + id + '">' + (del ? '<button type="button" class="x" data-a="phdel" data-ctx="' + esc(ctx) + '" data-id="' + id + '" aria-label="Supprimer la photo">×</button>' : '') + '</div>';
+  }).join("") + '</div>';
+}
+function photoBtns(ctx){ return '<div class="btns"><button class="btn" type="button" data-a="pcam" data-ctx="' + ctx + '">Prendre une photo</button><button class="btn" type="button" data-a="pgal" data-ctx="' + ctx + '">Galerie</button></div>'; }
+A.pcam = function(b){ PCTX = b.dataset.ctx; $("#pcam").click(); };
+A.pgal = function(b){ PCTX = b.dataset.ctx; $("#pgal").click(); };
+function pfile(e){
+  var fs = [].slice.call(e.target.files || []); e.target.value = "";
+  if (!fs.length || !PCTX || !DV) return;
+  var ctx = PCTX; toast("Photo en cours…", false);
+  Promise.all(fs.map(function(f){ return shrink(f).then(photoPut); })).then(function(ids){
+    var d = delivById(DV.id); if (!d) return;
+    if (ctx === "bl") d.bl = d.bl.concat(ids);
+    else if (ctx === "rdraft") DV.draft.photos = DV.draft.photos.concat(ids);
+    else if (ctx.indexOf("res:") === 0){ var r = d.res.filter(function(x){ return x.id === ctx.slice(4); })[0]; if (r) r.photos = r.photos.concat(ids); }
+    save(); renderDeliv(); toast(ids.length + " photo" + (ids.length > 1 ? "s" : "") + " ajoutée" + (ids.length > 1 ? "s" : ""), false);
+  }).catch(function(){ toast("Photo impossible (stockage plein ?)", false); });
+}
+$("#pcam").addEventListener("change", pfile); $("#pgal").addEventListener("change", pfile);
+A.phview = function(b){
+  photoURL(b.dataset.id).then(function(u){ if (!u) return; $("#pvimg").src = u; $("#pv").hidden = false; });
+};
+$("#pv").addEventListener("click", function(){ $("#pv").hidden = true; $("#pvimg").removeAttribute("src"); });
+A.phdel = function(b){
+  var d = delivById(DV.id), id = b.dataset.id, ctx = b.dataset.ctx;
+  if (ctx === "bl") d.bl = d.bl.filter(function(x){ return x !== id; });
+  else if (ctx === "rdraft") DV.draft.photos = DV.draft.photos.filter(function(x){ return x !== id; });
+  else if (ctx.indexOf("res:") === 0){ var r = d.res.filter(function(x){ return x.id === ctx.slice(4); })[0]; if (r) r.photos = r.photos.filter(function(x){ return x !== id; }); }
+  photoDel(id); save(); renderDeliv();
+};
+
+/* ---------- envoi par mail avec photos (partage Android) ---------- */
+function sendDossier(subject, text, ids, sup){
+  var to = (sup && sup.mail) ? sup.mail : (S.settings.to || ""), files = [];
+  var fallback = function(){
+    window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + (S.settings.cc ? "&cc=" + encodeURIComponent(S.settings.cc) : "") + "&body=" + encodeURIComponent(text);
+    if (ids.length) toast("Photos non jointes : ce navigateur ne sait pas les partager. Joins-les à la main.", false);
+  };
+  if (!ids.length){ fallback(); return; }
+  Promise.all(ids.map(function(id, i){ return photoGet(id).then(function(b){ if (b) files.push(new File([b], "photo-" + (i + 1) + ".jpg", {type:"image/jpeg"})); }); })).then(function(){
+    if (files.length && navigator.canShare && navigator.canShare({files:files}) && navigator.share){
+      if (to){ copyText(to); toast("Adresse copiée : colle-la dans « À » (" + to + ")", false); }
+      return navigator.share({title:subject, text:text, files:files}).catch(function(e){ if (e && e.name === "AbortError") return; fallback(); });
+    }
+    fallback();
+  });
+}
+
+/* ---------- vue par zone / fournisseurs ---------- */
+A.by = function(b){ F.by = b.dataset.v; F.zone = ""; renderStock(); };
+A.zone = function(b){ F.zone = (F.zone === b.dataset.v) ? "" : b.dataset.v; renderStock(); };
+function renderFou(){
+  if (FS.sel && supById(FS.sel)) return renderFouDetail();
+  FS.sel = "";
+  var h = '<h2>Fournisseurs</h2><div class="btns" style="margin-bottom:12px"><button class="btn main" type="button" data-a="supnew">+ Fournisseur</button></div>';
+  if (!S.sups.length) h += '<div class="empty">Aucun fournisseur. Crée le premier, puis range-lui ses matières.</div>';
+  S.sups.slice().sort(function(a, b){ return a.name.localeCompare(b.name, "fr"); }).forEach(function(s){
+    var ls = S.lines.filter(function(l){ return l.sup === s.id && !l.chute; }), mats = [];
+    ls.forEach(function(l){ if (mats.indexOf(l.mat) < 0) mats.push(l.mat); });
+    var op = S.deliv.filter(function(d){ return d.sup === s.id && (dStatus(d) !== "done" || openRes(d)); }).length;
+    h += '<article class="card" style="--tc:var(--surface)"><div class="info" data-a="supopen" data-id="' + s.id + '"><div class="t">' + esc(s.name) + '</div><div class="s">' + mats.length + ' matière' + (mats.length > 1 ? "s" : "") + ' · ' + ls.length + ' référence' + (ls.length > 1 ? "s" : "") + (s.mail ? ' · ' + esc(s.mail) : '') + '</div>' + (op ? '<div><span class="badge warn">' + op + ' livraison' + (op > 1 ? "s" : "") + ' en cours</span></div>' : '') + '</div></article>';
+  });
+  var nos = S.lines.filter(function(l){ return !l.sup && !l.chute; }).length;
+  if (nos) h += '<p style="font-size:13px;color:var(--muted)">' + nos + ' plaques sans fournisseur. Ouvre un fournisseur et ajoute-lui des matières, ou règle-le sur chaque plaque.</p>';
+  $("#main").innerHTML = h;
+}
+function renderFouDetail(){
+  var s = supById(FS.sel), h = '';
+  h += '<div class="btns" style="margin-bottom:8px"><button class="btn" type="button" data-a="supback" style="flex:none">‹ Fournisseurs</button><button class="btn" type="button" data-a="supedit" data-id="' + s.id + '" style="flex:none">Modifier</button></div>';
+  h += '<h2>' + esc(s.name) + '</h2><div class="set">';
+  h += s.mail ? '<p style="color:var(--fg)">Mail : <b>' + esc(s.mail) + '</b> <button class="btn" type="button" data-a="copymail" data-v="' + esc(s.mail) + '" style="flex:none;padding:6px 12px">Copier</button></p>' : '<p>Pas d\'adresse mail : ajoute-la avec Modifier.</p>';
+  if (s.tel) h += '<p style="color:var(--fg)">Tél : <a href="tel:' + esc(s.tel.replace(/\s+/g, "")) + '" style="color:var(--accent);font-weight:bold">' + esc(s.tel) + '</a></p>';
+  if (s.note) h += '<p style="color:var(--fg)">' + esc(s.note) + '</p>';
+  h += '</div>';
+  var ls = S.lines.filter(function(l){ return l.sup === s.id; }).sort(sortLines), cur = null;
+  h += '<h3 style="margin:14px 0 6px">Ses matières</h3>';
+  if (!ls.length) h += '<div class="empty">Aucune matière rattachée.</div>';
+  ls.forEach(function(l){
+    if (l.mat !== cur){ cur = l.mat; h += '<div class="grp mc" style="--tc:' + matC(cur) + ';display:flex;justify-content:space-between;align-items:center"><span>' + esc(cur) + '</span><button class="btn" type="button" data-a="supdelmat" data-v="' + esc(cur) + '" style="flex:none;padding:3px 10px;font-size:12px">Retirer</button></div>'; }
+    h += '<article class="card' + (l.chute ? " chute" : "") + '" style="--tc:' + colorOf(l) + '">' + plHtml(l) + '<div class="info" data-edit="' + l.id + '"><div class="t">' + esc(title(l)) + (l.chute ? ' (chute)' : '') + '</div><div class="s">' + esc(fmtShow(l.fmt)) + ' · stock ' + l.qty + (l.loc.length ? ' · ' + esc(l.loc.map(locTxt).join(" / ")) : '') + '</div></div></article>';
+  });
+  var mats = []; S.lines.slice().sort(sortLines).forEach(function(l){ if (mats.indexOf(l.mat) < 0) mats.push(l.mat); });
+  h += '<div class="set"><h3>Ajouter une matière chez lui</h3><p>Rattache toutes les plaques de la matière qui n\'ont pas encore de fournisseur. Les nouvelles plaques de cette matière le prendront par défaut.</p><div class="inline"><select id="fmatadd" aria-label="Matière">' + mats.map(function(m){ return '<option>' + esc(m) + '</option>'; }).join("") + '</select><button class="btn" type="button" data-a="supaddmat" style="flex:none">Ajouter</button></div></div>';
+  var dl = S.deliv.filter(function(d){ return d.sup === s.id; }).sort(function(a, b){ return b.t - a.t; }).slice(0, 8);
+  h += '<h3 style="margin:14px 0 6px">Ses livraisons</h3>' + (dl.length ? dl.map(delivCard).join("") : '<div class="empty">Aucune livraison.</div>');
+  $("#main").innerHTML = h;
+}
+A.supnew = function(){ openSupForm(""); };
+A.supopen = function(b){ FS.sel = b.dataset.id; renderFou(); window.scrollTo(0, 0); };
+A.supback = function(){ FS.sel = ""; renderFou(); };
+A.supedit = function(b){ openSupForm(b.dataset.id); };
+A.copymail = function(b){ copyText(b.dataset.v).then(function(){ toast("Adresse copiée", false); }); };
+A.supaddmat = function(){
+  var m = $("#fmatadd").value, s = supById(FS.sel); if (!m || !s) return;
+  snapshot(); var n = 0;
+  S.lines.forEach(function(l){ if (l.mat === m && !l.sup){ l.sup = s.id; n++; } });
+  S.matDef[m] = S.matDef[m] || {sup:"", loc:[]}; S.matDef[m].sup = s.id;
+  save(); renderFou(); toast(m + " : " + n + " plaque" + (n > 1 ? "s" : "") + " rattachée" + (n > 1 ? "s" : ""), true);
+};
+A.supdelmat = function(b){
+  var m = b.dataset.v, n = 0; snapshot();
+  S.lines.forEach(function(l){ if (l.mat === m && l.sup === FS.sel){ l.sup = ""; n++; } });
+  if (S.matDef[m] && S.matDef[m].sup === FS.sel) S.matDef[m].sup = "";
+  save(); renderFou(); toast(m + " retiré (" + n + ")", true);
+};
+function openSupForm(id){
+  SF.id = id; var s = id ? supById(id) : null;
+  $("#sh2p").innerHTML = '<h2>' + (s ? "Modifier le fournisseur" : "Nouveau fournisseur") + '</h2>' +
+    '<div class="field"><label for="sfn">Nom</label><input id="sfn" value="' + esc(s ? s.name : "") + '" placeholder="Richardson"></div>' +
+    '<div class="field"><label for="sfm">Mail (commandes, réserves)</label><input id="sfm" type="email" inputmode="email" value="' + esc(s ? s.mail : "") + '"></div>' +
+    '<div class="field"><label for="sft">Téléphone</label><input id="sft" type="tel" inputmode="tel" value="' + esc(s ? s.tel : "") + '"></div>' +
+    '<div class="field"><label for="sfo">Note</label><input id="sfo" value="' + esc(s ? s.note : "") + '" placeholder="contact, délai habituel…"></div>' +
+    '<div class="err" id="sferr"></div><div class="btns"><button class="btn main" type="button" data-a="supsave">Enregistrer</button><button class="btn" type="button" data-a="close2">Fermer</button>' + (s ? '<button class="btn danger" type="button" data-a="supdel" id="sfdel">Supprimer</button>' : '') + '</div>';
+  showSh2(); setTimeout(function(){ var f = $("#sfn"); if (f) f.focus(); }, 50);
+}
+A.supsave = function(){
+  var n = $("#sfn").value.trim(); if (!n){ $("#sferr").textContent = "Le nom est obligatoire."; return; }
+  snapshot(); var s = SF.id ? supById(SF.id) : null;
+  if (!s){ s = {id:uid(), name:n, mail:"", tel:"", note:""}; S.sups.push(s); }
+  s.name = n; s.mail = $("#sfm").value.trim(); s.tel = $("#sft").value.trim(); s.note = $("#sfo").value.trim();
+  save(); FS.sel = s.id; closeSh2(); toast("Fournisseur enregistré", true);
+};
+A.supdel = function(){
+  var b = $("#sfdel"); if (b.textContent !== "Confirmer la suppression"){ b.textContent = "Confirmer la suppression"; return; }
+  snapshot(); var id = SF.id;
+  S.sups = S.sups.filter(function(x){ return x.id !== id; });
+  S.lines.forEach(function(l){ if (l.sup === id) l.sup = ""; });
+  Object.keys(S.matDef).forEach(function(m){ if (S.matDef[m].sup === id) S.matDef[m].sup = ""; });
+  FS.sel = ""; save(); closeSh2(); toast("Fournisseur supprimé", true);
+};
+
+/* ---------- livraisons ---------- */
+function mkDeliv(sup, urgent, items, ordId){
+  return {id:uid(), t:Date.now(), sup:sup, urgent:!!urgent, ord:ordId || "", items:items.map(function(x){ return {id:x.l.id, lbl:label(x.l), att:x.q, recu:0, cur:x.q}; }), bl:[], res:[], hist:[], closed:false, note:""};
+}
+function delivCard(d){
+  var b = "", st = dStatus(d);
+  if (d.urgent) b += '<span class="badge bad">URGENTE</span>';
+  b += '<span class="badge ' + (st === "done" ? "chu" : "warn") + '">' + statusLabel(d) + '</span>';
+  if (openRes(d)) b += '<span class="badge bad">Réserve : ' + openRes(d) + '</span>';
+  if (d.bl.length) b += '<span class="badge chu">BL : ' + d.bl.length + ' photo' + (d.bl.length > 1 ? "s" : "") + '</span>';
+  return '<article class="card" style="--tc:var(--surface)"><div class="info" data-a="dopen" data-id="' + d.id + '"><div class="t">' + esc(supName(d.sup)) + ' · ' + dm(d.t) + '</div><div class="s">' + d.items.length + ' ligne' + (d.items.length > 1 ? "s" : "") + ' · ' + d.items.slice(0, 2).map(function(i){ return esc(i.lbl); }).join(", ") + (d.items.length > 2 ? "…" : "") + '</div><div>' + b + '</div></div></article>';
+}
+function renderLiv(){
+  var h = '<h2>Livraisons</h2><div class="btns" style="margin-bottom:10px"><button class="btn main" type="button" data-a="dnew">+ Livraison</button></div>';
+  var fl = [["open", "À recevoir / relicat"], ["res", "Réserves"], ["done", "Terminées"], ["all", "Toutes"]];
+  h += '<div class="chips" style="margin-bottom:10px">' + fl.map(function(f){ return '<button class="chip" type="button" data-a="lvf" data-v="' + f[0] + '" aria-pressed="' + (LV.f === f[0]) + '">' + f[1] + '</button>'; }).join("") + '</div>';
+  var ds = S.deliv.filter(function(d){
+    var st = dStatus(d);
+    return LV.f === "all" || (LV.f === "open" && st !== "done") || (LV.f === "res" && openRes(d) > 0) || (LV.f === "done" && st === "done");
+  }).sort(function(a, b){ return b.t - a.t; });
+  h += ds.length ? ds.map(delivCard).join("") : '<div class="empty">Aucune livraison ici. Une commande enregistrée dans « Commande » apparaît automatiquement.</div>';
+  $("#main").innerHTML = h;
+}
+A.lvf = function(b){ LV.f = b.dataset.v; renderLiv(); };
+A.dopen = function(b){ DV = {id:b.dataset.id, draft:{txt:"", photos:[]}}; renderDeliv(); showSh2(); };
+function renderDeliv(){
+  var d = DV && delivById(DV.id); if (!d){ closeSh2(); return; }
+  var h = '', rem = remOf(d), st = dStatus(d);
+  h += '<h2>Livraison · ' + esc(supName(d.sup)) + '</h2><div class="s" style="margin-bottom:8px;color:var(--muted)">Créée le ' + dfull(d.t) + (d.urgent ? ' · <b>URGENTE</b>' : '') + ' · ' + statusLabel(d) + '</div>';
+  h += '<div class="set"><h3>Bon de livraison (BL)</h3>' + thumbs(d.bl, "bl", true) + photoBtns("bl") + '</div>';
+  h += '<div class="set"><h3>Marchandise reçue</h3>';
+  d.items.forEach(function(it, i){
+    var r = Math.max(0, it.att - it.recu);
+    h += '<div class="row"><div class="info"><div class="t">' + esc(it.lbl) + '</div><div class="s">attendu ' + it.att + ' · reçu ' + it.recu + (r ? ' · reste ' + r : ' · complet') + '</div></div><div class="qty"><button type="button" data-a="dminus" data-i="' + i + '" aria-label="Moins">−</button><input class="qi" inputmode="numeric" data-ch="dcur" data-i="' + i + '" value="' + it.cur + '" aria-label="Reçu cette fois"><button type="button" data-a="dplus" data-i="' + i + '" aria-label="Plus">+</button></div></div>';
+  });
+  h += '<div class="btns"><button class="btn main" type="button" data-a="drecv">Valider la réception (ajoute au stock)</button></div>';
+  if (d.hist.length) h += '<div style="margin-top:8px">' + d.hist.map(function(x){ return '<div class="s" style="color:var(--muted);font-size:12px">' + dm(x.t) + ' ' + hm(x.t) + ' : ' + x.items.map(function(i){ return '+' + i.q + ' ' + esc(i.lbl); }).join(", ") + '</div>'; }).join("") + '</div>';
+  h += '</div>';
+  h += '<div class="set"><h3>Réserves (casse, manque, erreur…)</h3>';
+  d.res.forEach(function(r){
+    h += '<div class="row" style="flex-direction:column;align-items:stretch"><div class="s" style="color:var(--muted)">' + dm(r.t) + ' ' + hm(r.t) + ' · ' + (r.open ? '<b style="color:var(--bad)">ouverte</b>' : 'levée') + '</div><div class="t" style="white-space:pre-wrap">' + esc(r.txt || "(sans texte)") + '</div>' + thumbs(r.photos, "res:" + r.id, true) + photoBtns("res:" + r.id) +
+      '<div class="btns"><button class="btn main" type="button" data-a="rsend" data-r="' + r.id + '">Envoyer par mail</button><button class="btn" type="button" data-a="rtoggle" data-r="' + r.id + '">' + (r.open ? "Marquer levée" : "Rouvrir") + '</button><button class="btn danger" type="button" data-a="rdel" data-r="' + r.id + '">Supprimer</button></div></div>';
+  });
+  h += '<div class="field" style="margin-top:8px"><label for="rtxt">Nouvelle réserve</label><textarea id="rtxt" data-in="rtxt" rows="3" placeholder="Ex. 2 plaques PMMA rayées, 1 plaque manquante">' + esc(DV.draft.txt) + '</textarea></div>' + thumbs(DV.draft.photos, "rdraft", true) + photoBtns("rdraft") + '<div class="btns" style="margin-top:8px"><button class="btn" type="button" data-a="radd">Ajouter la réserve</button></div></div>';
+  if (d.hist.length && rem > 0 && !d.closed){
+    h += '<div class="set"><h3>Relicat : ' + rem + ' à recevoir</h3>' + d.items.filter(function(i){ return i.att > i.recu; }).map(function(i){ return '<div class="s" style="color:var(--fg)">' + esc(i.lbl) + ' : ' + (i.att - i.recu) + '</div>'; }).join("") + '<div class="btns" style="margin-top:8px"><button class="btn main" type="button" data-a="relsend">Envoyer le relicat par mail</button><button class="btn" type="button" data-a="dclose">Clôturer sans relicat</button></div></div>';
+  }
+  h += '<div class="btns"><button class="btn" type="button" data-a="close2">Fermer</button><button class="btn danger" type="button" data-a="ddel" id="dddel">Supprimer la livraison</button></div>';
+  $("#sh2p").innerHTML = h; hydrate($("#sh2p"));
+}
+CH.dcur = function(t){ var d = delivById(DV.id), i = +t.dataset.i; d.items[i].cur = Math.max(0, num(t.value, 0)); save(); };
+A.dminus = function(b){ var d = delivById(DV.id), i = +b.dataset.i; d.items[i].cur = Math.max(0, d.items[i].cur - 1); save(); renderDeliv(); };
+A.dplus = function(b){ var d = delivById(DV.id), i = +b.dataset.i; d.items[i].cur += 1; save(); renderDeliv(); };
+CH.rtxt = function(t){ DV.draft.txt = t.value; };
+A.drecv = function(){
+  var d = delivById(DV.id), rec = [];
+  d.items.forEach(function(it){ if ((it.cur | 0) > 0) rec.push(it); });
+  if (!rec.length){ toast("Mets les quantités reçues avant de valider.", false); return; }
+  snapshot(); var done = [];
+  rec.forEach(function(it){
+    var q = it.cur | 0, l = byId(it.id);
+    if (l){ l.qty += q; l.pend = Math.max(0, (l.pend || 0) - q); addLog(l.id, "entree", q, l.qty); }
+    it.recu += q; it.cur = Math.max(0, it.att - it.recu); done.push({lbl:it.lbl, q:q});
+  });
+  d.hist.push({t:Date.now(), items:done}); save(); renderBadge(); renderDeliv(); toast("Réception enregistrée, stock mis à jour", true);
+};
+A.radd = function(){
+  var d = delivById(DV.id), txt = ($("#rtxt").value || "").trim();
+  if (!txt && !DV.draft.photos.length){ toast("Écris la réserve ou ajoute une photo.", false); return; }
+  d.res.push({id:uid(), t:Date.now(), txt:txt, photos:DV.draft.photos.slice(), open:true});
+  DV.draft = {txt:"", photos:[]}; save(); renderBadge(); renderDeliv(); toast("Réserve ajoutée", false);
+};
+A.rtoggle = function(b){ var d = delivById(DV.id), r = d.res.filter(function(x){ return x.id === b.dataset.r; })[0]; if (r){ r.open = !r.open; save(); renderBadge(); renderDeliv(); } };
+A.rdel = function(b){
+  var d = delivById(DV.id), r = d.res.filter(function(x){ return x.id === b.dataset.r; })[0]; if (!r) return;
+  if (b.textContent !== "Confirmer"){ b.textContent = "Confirmer"; return; }
+  r.photos.forEach(photoDel); d.res = d.res.filter(function(x){ return x.id !== r.id; }); save(); renderBadge(); renderDeliv();
+};
+A.rsend = function(b){
+  var d = delivById(DV.id), r = d.res.filter(function(x){ return x.id === b.dataset.r; })[0]; if (!r) return;
+  var sup = supById(d.sup), t = [];
+  t.push("RESERVE SUR LIVRAISON - Publimax"); t.push("Fournisseur : " + supName(d.sup)); t.push("Livraison du " + dfull(r.t) + (d.hist.length ? " (reçue le " + dfull(d.hist[0].t) + ")" : "")); t.push("");
+  t.push("Réserve :"); t.push(r.txt || "(voir photos)"); t.push("");
+  t.push("Marchandise de la commande :"); d.items.forEach(function(i){ t.push("- " + i.lbl + " : attendu " + i.att + ", reçu " + i.recu); });
+  t.push(""); if (r.photos.length || d.bl.length) t.push("Photos jointes : " + (r.photos.length + d.bl.length) + " (dont BL : " + d.bl.length + ")");
+  t.push("Merci de nous indiquer la suite donnée (remplacement, avoir, reprise)."); t.push(S.settings.sig || "");
+  sendDossier("Réserve livraison Publimax - " + supName(d.sup), t.join("\n"), r.photos.concat(d.bl), sup);
+};
+A.relsend = function(){
+  var d = delivById(DV.id), sup = supById(d.sup), t = [];
+  t.push("RELICAT A LIVRER - Publimax"); t.push("Fournisseur : " + supName(d.sup)); t.push("Commande du " + dfull(d.t)); t.push("");
+  t.push("Reste à livrer :"); d.items.forEach(function(i){ if (i.att > i.recu) t.push("- " + i.lbl + " : " + (i.att - i.recu) + " plaque" + ((i.att - i.recu) > 1 ? "s" : "")); });
+  t.push(""); t.push("Merci de confirmer la date de livraison du relicat."); t.push(S.settings.sig || "");
+  sendDossier("Relicat livraison Publimax - " + supName(d.sup), t.join("\n"), d.bl, sup);
+};
+A.dclose = function(){
+  var d = delivById(DV.id); snapshot();
+  d.items.forEach(function(i){ var r = Math.max(0, i.att - i.recu), l = byId(i.id); if (r > 0 && l) l.pend = Math.max(0, (l.pend || 0) - r); });
+  d.closed = true; save(); renderBadge(); renderDeliv(); toast("Livraison clôturée", true);
+};
+A.ddel = function(b){
+  if (b.textContent !== "Confirmer la suppression"){ b.textContent = "Confirmer la suppression"; return; }
+  var d = delivById(DV.id); snapshot();
+  if (!d.closed) d.items.forEach(function(i){ var r = Math.max(0, i.att - i.recu), l = byId(i.id); if (r > 0 && l) l.pend = Math.max(0, (l.pend || 0) - r); });
+  d.bl.forEach(photoDel); d.res.forEach(function(r){ r.photos.forEach(photoDel); });
+  S.deliv = S.deliv.filter(function(x){ return x.id !== d.id; }); save(); closeSh2(); toast("Livraison supprimée", true);
+};
+/* livraison sans commande */
+function dnListHtml(){
+  var q = DN.q.toLowerCase(), ls = S.lines.filter(function(l){ return !l.chute && (!DN.sup || l.sup === DN.sup) && (!q || lineText(l).indexOf(q) >= 0); }).sort(sortLines).slice(0, 40);
+  if (!ls.length) return '<div class="empty">' + (DN.sup ? 'Aucune plaque rattachée à ce fournisseur : choisis « Tous » pour tout voir.' : 'Aucune plaque.') + '</div>';
+  return ls.map(function(l){ return '<div class="row"><div class="info"><div class="t">' + esc(label(l)) + '</div></div><input class="qi" inputmode="numeric" data-in="dnqty" data-id="' + l.id + '" value="' + (DN.qty[l.id] || "") + '" placeholder="0" aria-label="Quantité attendue"></div>'; }).join("");
+}
+A.dnew = function(){
+  DN = {sup:"", q:"", qty:{}};
+  $("#sh2p").innerHTML = '<h2>Nouvelle livraison</h2><p class="s" style="color:var(--muted)">Pour une livraison arrivée sans commande enregistrée : indique ce qui est attendu.</p><div class="field"><label for="dnsup">Fournisseur</label><select id="dnsup" data-ch="dnsup"><option value="">Tous</option>' + S.sups.map(function(s){ return '<option value="' + s.id + '">' + esc(s.name) + '</option>'; }).join("") + '</select></div><div class="field"><input class="search" id="dnq" data-in="dnq" type="search" placeholder="Chercher une plaque" aria-label="Chercher"></div><div id="dnlist">' + dnListHtml() + '</div><div class="btns" style="margin-top:10px"><button class="btn main" type="button" data-a="dcreate">Créer la livraison</button><button class="btn" type="button" data-a="close2">Fermer</button></div>';
+  showSh2();
+};
+CH.dnsup = function(t){ DN.sup = t.value; $("#dnlist").innerHTML = dnListHtml(); };
+CH.dnq = function(t){ DN.q = t.value; $("#dnlist").innerHTML = dnListHtml(); };
+CH.dnqty = function(t){ DN.qty[t.dataset.id] = Math.max(0, num(t.value, 0)); };
+A.dcreate = function(){
+  var items = []; Object.keys(DN.qty).forEach(function(id){ var l = byId(id); if (l && DN.qty[id] > 0) items.push({l:l, q:DN.qty[id]}); });
+  if (!items.length){ toast("Mets au moins une quantité attendue.", false); return; }
+  snapshot(); var d = mkDeliv(DN.sup, false, items, ""); S.deliv.unshift(d); save();
+  DV = {id:d.id, draft:{txt:"", photos:[]}}; renderDeliv(); toast("Livraison créée", true);
+};
+
+/* ---------- reglages : zones ---------- */
+A.zadd = function(){
+  var n = ($("#znew").value || "").trim(); if (!n) return;
+  if (S.zones.indexOf(n) >= 0){ toast("Cette zone existe déjà.", false); return; }
+  snapshot(); S.zones.push(n); save(); renderSet();
+};
+A.zdel = function(b){
+  var z = b.dataset.z, n = S.lines.filter(function(l){ return l.loc.some(function(o){ return o.z === z; }); }).length;
+  if (n){ toast("Zone utilisée par " + n + " ligne" + (n > 1 ? "s" : "") + " : change leur emplacement d'abord.", false); return; }
+  snapshot(); S.zones = S.zones.filter(function(x){ return x !== z; });
+  Object.keys(S.matDef).forEach(function(m){ S.matDef[m].loc = (S.matDef[m].loc || []).filter(function(o){ return o.z !== z; }); });
+  save(); renderSet();
+};
+CH.zren = function(t){
+  var old = t.dataset.z, n = t.value.trim();
+  if (!n || n === old){ t.value = old; return; }
+  if (S.zones.indexOf(n) >= 0){ toast("Cette zone existe déjà.", false); t.value = old; return; }
+  snapshot(); S.zones[S.zones.indexOf(old)] = n;
+  S.lines.forEach(function(l){ l.loc.forEach(function(o){ if (o.z === old) o.z = n; }); });
+  Object.keys(S.matDef).forEach(function(m){ (S.matDef[m].loc || []).forEach(function(o){ if (o.z === old) o.z = n; }); });
+  save(); renderSet(); toast("Zone renommée", true);
+};
+A.gowk = function(){ view = "wk"; render(); window.scrollTo(0, 0); };
+
+/* ---------- emplacements dans la fiche plaque ---------- */
+function locRowHtml(o){
+  var zs = S.zones.slice(); if (o.z && zs.indexOf(o.z) < 0) zs.push(o.z);
+  var cs = ""; for (var i = 0; i < 26; i++){ var c = String.fromCharCode(65 + i); cs += '<option' + (c === o.c ? " selected" : "") + '>' + c + '</option>'; }
+  return '<div class="locrow"><select class="lz" aria-label="Zone">' + zs.map(function(z){ return '<option' + (z === o.z ? " selected" : "") + '>' + esc(z) + '</option>'; }).join("") + '</select><input class="le" type="number" min="0" max="9" inputmode="numeric" value="' + o.e + '" aria-label="Étage (0 = sol)"><select class="lc" aria-label="Colonne">' + cs + '</select><button type="button" class="btn" data-del-loc style="flex:none;padding:8px 12px" aria-label="Retirer">×</button></div>';
+}
+function setLocs(arr){ $("#flocs").innerHTML = arr.map(locRowHtml).join(""); }
+function collectLocs(){
+  var out = [], rows = $("#flocs").querySelectorAll(".locrow");
+  for (var i = 0; i < rows.length; i++){
+    var z = rows[i].querySelector(".lz").value, e = Math.max(0, Math.min(9, num(rows[i].querySelector(".le").value, 0))), c = rows[i].querySelector(".lc").value;
+    if (z) out.push({z:z, e:e, c:c});
+  }
+  return out;
+}
+$("#flocadd").addEventListener("click", function(){
+  var cur = collectLocs(), last = cur[cur.length - 1];
+  cur.push({z:last ? last.z : (S.zones[0] || ""), e:last ? last.e : 0, c:last ? last.c : "A"}); setLocs(cur);
+});
+$("#flocs").addEventListener("click", function(e){ var b = e.target.closest("[data-del-loc]"); if (b) b.closest(".locrow").remove(); });
+function fillSup(v){ $("#fsup").innerHTML = '<option value="">Aucun</option>' + S.sups.map(function(s){ return '<option value="' + s.id + '"' + (s.id === v ? " selected" : "") + '>' + esc(s.name) + '</option>'; }).join(""); }
+$("#fmat").addEventListener("change", function(){
+  if (editId) return; var md = S.matDef[$("#fmat").value.trim().toUpperCase()]; if (!md) return;
+  if (!$("#fsup").value && md.sup) $("#fsup").value = md.sup;
+  if (!collectLocs().length && md.loc && md.loc.length) setLocs(md.loc);
+});
+
+/* ---------- theme clair / sombre ---------- */
+var THK = "publimax_stock_theme";
+function applyTheme(t){ if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
+function effTheme(){ var a = document.documentElement.getAttribute("data-theme"); if (a) return a; return (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"; }
+applyTheme(lget(THK));
+$("#bth").addEventListener("click", function(){ var n = effTheme() === "dark" ? "light" : "dark"; applyTheme(n); lset(THK, n); toast(n === "dark" ? "Mode sombre" : "Mode clair", false); });
+/* ---------- verrouiller ---------- */
+$("#blk").addEventListener("click", function(){
+  if (lget(PINK)){ try { sessionStorage.removeItem(SESK); } catch (e) {} showLock("ask", "boot"); }
+  else { toast("Crée d'abord un code pour pouvoir verrouiller", false); showLock("new", "settings"); }
+});
+/* ---------- calendrier ---------- */
+var CAL = {y:0, m:0, sel:""};
+function p2(n){ return (n < 10 ? "0" : "") + n; }
+function dk(t){ var d = new Date(t); return d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()); }
+function calMap(){
+  var m = {};
+  S.log.forEach(function(e){ var k = dk(e.t); (m[k] = m[k] || []).push({t:e.t, e:e}); });
+  S.orders.forEach(function(o){ var k = dk(o.t); (m[k] = m[k] || []).push({t:o.t, o:o}); });
+  return m;
+}
+function evHtml(x){
+  if (x.o){
+    var tot = x.o.items.reduce(function(a, i){ return a + i.qty; }, 0);
+    return '<div class="ev"><div class="d">' + hm(x.t) + '</div><div class="l"><b>' + (x.o.urgent ? "Commande URGENTE" : "Commande") + '</b><br>' + x.o.items.map(function(i){ return esc(i.lbl) + ' : ' + i.qty; }).join("<br>") + '</div><div class="v cmd">' + tot + '</div></div>';
+  }
+  var e = x.e, cls = e.k === "sortie" ? "neg" : (e.k === "entree" ? "pos" : ""), nm = e.k === "comptage" ? "comptage" : (e.k === "entree" ? "entrée" : "sortie");
+  return '<div class="ev"><div class="d">' + hm(x.t) + '</div><div class="l">' + esc(e.lbl) + '<br><span style="color:var(--muted);font-size:12px">' + nm + ' · reste ' + e.q + '</span></div><div class="v ' + cls + '">' + (e.d > 0 ? "+" : "") + e.d + '</div></div>';
+}
+function renderCal(){
+  var map = calMap(), first = new Date(CAL.y, CAL.m, 1), start = (first.getDay() || 7) - 1, days = new Date(CAL.y, CAL.m + 1, 0).getDate(), today = dk(Date.now());
+  var h = '<h2>Calendrier</h2><div class="calhd"><button class="btn" type="button" data-cal="-1" aria-label="Mois précédent">‹</button><b>' + esc(first.toLocaleDateString("fr-FR", {month:"long", year:"numeric"})) + '</b><button class="btn" type="button" data-cal="1" aria-label="Mois suivant">›</button></div><div class="calg">';
+  ["L", "M", "M", "J", "V", "S", "D"].forEach(function(d){ h += '<div class="wd">' + d + '</div>'; });
+  for (var i = 0; i < start; i++) h += '<div></div>';
+  for (var d = 1; d <= days; d++){
+    var k = CAL.y + "-" + p2(CAL.m + 1) + "-" + p2(d), ev = map[k] || [], f = {s:0, e:0, o:0, c:0};
+    ev.forEach(function(x){ if (x.o) f.o = 1; else if (x.e.k === "sortie") f.s = 1; else if (x.e.k === "entree") f.e = 1; else f.c = 1; });
+    h += '<button type="button" class="cal-d' + (k === today ? " today" : "") + (k === CAL.sel ? " sel" : "") + '" data-day="' + k + '">' + d + '<div class="dots">' + (f.s ? '<span class="dot s"></span>' : '') + (f.e ? '<span class="dot e"></span>' : '') + (f.o ? '<span class="dot o"></span>' : '') + (f.c ? '<span class="dot c"></span>' : '') + '</div></button>';
+  }
+  h += '</div><p style="font-size:12px;color:var(--muted);margin:0 0 10px">Rouge : sorties · vert : entrées · orange : commandes · gris : comptages</p>';
+  var evs = (map[CAL.sel] || []).slice().sort(function(a, b){ return b.t - a.t; });
+  var sp = CAL.sel.split("-");
+  h += '<h3 style="margin:6px 0">' + esc(new Date(+sp[0], +sp[1] - 1, +sp[2]).toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"})) + '</h3>';
+  h += evs.length ? evs.map(evHtml).join("") : '<div class="empty">Rien ce jour-là.</div>';
+  h += '<div class="btns" style="margin-top:12px"><button class="btn" type="button" data-caltoday="1">Aujourd\'hui</button><button class="btn" type="button" data-calweek="1">Par semaine</button><button class="btn main" type="button" data-calclose="1">Fermer</button></div>';
+  $("#calp").innerHTML = h;
+}
+function openCal(){ var n = new Date(); CAL.y = n.getFullYear(); CAL.m = n.getMonth(); CAL.sel = dk(n); renderCal(); $("#cal").hidden = false; }
+$("#bcal").addEventListener("click", openCal);
+$("#cal").addEventListener("click", function(e){
+  var t = e.target, b;
+  if (t === $("#cal") || t.closest("[data-calclose]")){ $("#cal").hidden = true; return; }
+  if ((b = t.closest("[data-cal]"))){ CAL.m += parseInt(b.dataset.cal, 10); if (CAL.m < 0){ CAL.m = 11; CAL.y--; } if (CAL.m > 11){ CAL.m = 0; CAL.y++; } renderCal(); return; }
+  if ((b = t.closest("[data-day]"))){ CAL.sel = b.dataset.day; renderCal(); return; }
+  if (t.closest("[data-calweek]")){ $("#cal").hidden = true; view = "wk"; render(); window.scrollTo(0, 0); return; }
+  if (t.closest("[data-caltoday]")) openCal();
 });
 /* ---------- installation (Android / Chrome) ---------- */
 var deferredInstall = null;
